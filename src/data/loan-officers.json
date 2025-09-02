@@ -1,0 +1,36 @@
+{
+  "loanOfficers": [
+    {
+      "id": "edwin-simon",
+      "name": "Edwin Simon",
+      "email": "edwin.simon@microfinance.com",
+      "phone": "+255123456789",
+      "department": "Credit",
+      "position": "Senior Loan Officer",
+      "status": "active",
+      "hireDate": "2022-01-15",
+      "totalLoans": 45,
+      "activeLoans": 12,
+      "totalDisbursed": 15000000,
+      "collectionRate": 95.5,
+      "specialization": ["business_loans", "agricultural_loans"],
+      "areas": ["Dar es Salaam", "Arusha", "Mwanza"]
+    },
+    {
+      "id": "joseph-ulomi",
+      "name": "Joseph Ulomi",
+      "email": "joseph.ulomi@microfinance.com",
+      "phone": "+255987654321",
+      "department": "Credit",
+      "position": "Loan Officer",
+      "status": "active",
+      "hireDate": "2023-03-01",
+      "totalLoans": 28,
+      "activeLoans": 8,
+      "totalDisbursed": 8500000,
+      "collectionRate": 92.3,
+      "specialization": ["personal_loans", "microfinance"],
+      "areas": ["Dodoma", "Tanga", "Mbeya"]
+    }
+  ]
+}

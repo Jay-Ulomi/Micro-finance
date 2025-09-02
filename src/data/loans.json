@@ -1,0 +1,133 @@
+{
+  "loans": [
+    {
+      "id": "1",
+      "borrowerId": "1",
+      "borrowerName": "John Doe",
+      "loanType": "business",
+      "loanCategory": "secured",
+      "applicationDate": "2024-01-16",
+      "requestedAmount": 500000,
+      "approvedAmount": 450000,
+      "interestRate": 12.5,
+      "loanTerm": 24,
+      "repaymentFrequency": "monthly",
+      "status": "active",
+      "purpose": "Business expansion and equipment purchase",
+      "collateral": {
+        "type": "real_estate",
+        "description": "Commercial property in Dar es Salaam",
+        "value": 800000,
+        "documents": ["property_deed.pdf", "valuation_report.pdf"]
+      },
+      "guarantors": [
+        {
+          "id": "1",
+          "name": "Jane Doe",
+          "relationship": "spouse",
+          "contact": "+255123456790"
+        }
+      ],
+      "loanOfficer": "Edwin Simon",
+      "applicationDocuments": ["business_plan.pdf", "financial_statements.pdf"],
+      "disbursementDate": "2024-01-20",
+      "firstPaymentDate": "2024-02-20",
+      "maturityDate": "2026-01-20",
+      "totalInterest": 112500,
+      "totalAmount": 562500,
+      "outstandingBalance": 450000,
+      "nextPaymentDate": "2024-03-20",
+      "nextPaymentAmount": 23437.5,
+      "paymentHistory": [],
+      "notes": "Excellent borrower with strong business plan",
+      "createdAt": "2024-01-16",
+      "updatedAt": "2024-01-20"
+    },
+    {
+      "id": "2",
+      "borrowerId": "2",
+      "borrowerName": "Jane Smith",
+      "loanType": "personal",
+      "loanCategory": "unsecured",
+      "applicationDate": "2024-01-21",
+      "requestedAmount": 200000,
+      "approvedAmount": null,
+      "interestRate": 15.0,
+      "loanTerm": 12,
+      "repaymentFrequency": "monthly",
+      "status": "under_review",
+      "purpose": "Home improvement and furniture purchase",
+      "collateral": null,
+      "guarantors": [],
+      "loanOfficer": "Joseph Ulomi",
+      "applicationDocuments": ["income_proof.pdf", "bank_statements.pdf"],
+      "disbursementDate": null,
+      "firstPaymentDate": null,
+      "maturityDate": null,
+      "totalInterest": 0,
+      "totalAmount": 0,
+      "outstandingBalance": 0,
+      "nextPaymentDate": null,
+      "nextPaymentAmount": null,
+      "paymentHistory": [],
+      "notes": "Application under review, pending additional documentation",
+      "createdAt": "2024-01-21",
+      "updatedAt": "2024-01-21"
+    },
+    {
+      "id": "3",
+      "borrowerId": "4",
+      "borrowerName": "Sarah Wilson",
+      "loanType": "business",
+      "loanCategory": "secured",
+      "applicationDate": "2024-02-02",
+      "requestedAmount": 800000,
+      "approvedAmount": 750000,
+      "interestRate": 11.0,
+      "loanTerm": 36,
+      "repaymentFrequency": "monthly",
+      "status": "active",
+      "purpose": "Medical equipment purchase for clinic",
+      "collateral": {
+        "type": "equipment",
+        "description": "Medical equipment and clinic property",
+        "value": 1200000,
+        "documents": ["equipment_invoice.pdf", "property_valuation.pdf"]
+      },
+      "guarantors": [
+        {
+          "id": "2",
+          "name": "Dr. Robert Wilson",
+          "relationship": "business_partner",
+          "contact": "+255777888990"
+        }
+      ],
+      "loanOfficer": "Joseph Ulomi",
+      "applicationDocuments": ["business_plan.pdf", "medical_licenses.pdf"],
+      "disbursementDate": "2024-02-10",
+      "firstPaymentDate": "2024-03-10",
+      "maturityDate": "2027-02-10",
+      "totalInterest": 247500,
+      "totalAmount": 997500,
+      "outstandingBalance": 750000,
+      "nextPaymentDate": "2024-03-10",
+      "nextPaymentAmount": 27708.33,
+      "paymentHistory": [],
+      "notes": "High-value loan for medical practice expansion",
+      "createdAt": "2024-02-02",
+      "updatedAt": "2024-02-10"
+    }
+  ],
+  "statistics": {
+    "totalLoans": 3,
+    "activeLoans": 2,
+    "pendingApproval": 1,
+    "disbursedThisMonth": 2,
+    "totalDisbursed": 1200000,
+    "totalOutstanding": 1200000,
+    "overdueLoans": 0,
+    "defaultRate": 0,
+    "averageLoanAmount": 500000,
+    "averageInterestRate": 12.83
+  }
+}
