@@ -21,7 +21,7 @@
               sidebarCollapsed ? 'text-lg' : 'text-xl',
             ]"
           >
-            {{ sidebarCollapsed ? "LM" : "Loan Manager" }}
+            {{ sidebarCollapsed ? "OL" : "Orbit Loan" }}
           </h1>
           <div class="flex items-center space-x-2">
             <!-- Toggle button for large screens -->
