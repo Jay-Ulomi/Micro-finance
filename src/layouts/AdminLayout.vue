@@ -332,7 +332,6 @@ const navigationItems = [
       { name: "borrowers-email", label: "Send Email to All Borrowers", to: "/borrowers/email" },
       { name: "borrowers-invite", label: "Invite Borrowers", to: "/borrowers/invite" },
       { name: "borrowers-kyc", label: "KYC Verification", to: "/borrowers/kyc" },
-      { name: "borrowers-documents", label: "Documents", to: "/borrowers/documents" },
     ],
   },
   {

@@ -1,0 +1,93 @@
+[
+  {
+    "id": "1",
+    "groupId": "1",
+    "description": "New member Grace Kimaro joined the group",
+    "date": "2024-01-20",
+    "type": "member_added"
+  },
+  {
+    "id": "2",
+    "groupId": "1",
+    "description": "Group loan LOAN-002 was approved",
+    "date": "2024-01-18",
+    "type": "loan_approved"
+  },
+  {
+    "id": "3",
+    "groupId": "1",
+    "description": "Monthly meeting held with 20 members present",
+    "date": "2024-01-16",
+    "type": "meeting"
+  },
+  {
+    "id": "4",
+    "groupId": "1",
+    "description": "Sarah Mwalimu set as group leader",
+    "date": "2024-01-15",
+    "type": "leader_assigned"
+  },
+  {
+    "id": "5",
+    "groupId": "2",
+    "description": "Group created and first meeting scheduled",
+    "date": "2024-01-10",
+    "type": "group_created"
+  },
+  {
+    "id": "6",
+    "groupId": "2",
+    "description": "Peter Kimaro approved for business loan",
+    "date": "2024-01-12",
+    "type": "loan_approved"
+  },
+  {
+    "id": "7",
+    "groupId": "3",
+    "description": "Agricultural cooperative registration completed",
+    "date": "2024-01-05",
+    "type": "group_created"
+  },
+  {
+    "id": "8",
+    "groupId": "3",
+    "description": "40 members registered for the cooperative",
+    "date": "2024-01-12",
+    "type": "member_added"
+  },
+  {
+    "id": "9",
+    "groupId": "4",
+    "description": "Group status changed to inactive",
+    "date": "2024-01-08",
+    "type": "status_changed"
+  },
+  {
+    "id": "10",
+    "groupId": "5",
+    "description": "Tech Innovation Hub launched",
+    "date": "2024-01-08",
+    "type": "group_created"
+  },
+  {
+    "id": "11",
+    "groupId": "5",
+    "description": "David Ochieng approved for technology loan",
+    "date": "2024-01-10",
+    "type": "loan_approved"
+  },
+  {
+    "id": "12",
+    "groupId": "6",
+    "description": "Community Health Workers group established",
+    "date": "2024-01-12",
+    "type": "group_created"
+  },
+  {
+    "id": "13",
+    "groupId": "6",
+    "description": "Dr. Amina Mwamba approved for health services loan",
+    "date": "2024-01-19",
+    "type": "loan_approved"
+  }
+]

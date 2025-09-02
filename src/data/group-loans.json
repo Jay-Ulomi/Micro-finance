@@ -1,0 +1,86 @@
+[
+  {
+    "id": "1",
+    "groupId": "1",
+    "loanNumber": "LOAN-001",
+    "borrowerId": "1",
+    "borrowerName": "Sarah Mwalimu",
+    "loanType": "Business",
+    "amount": 5000000,
+    "status": "active",
+    "disbursedAt": "2024-01-15",
+    "dueDate": "2024-07-15"
+  },
+  {
+    "id": "2",
+    "groupId": "1",
+    "loanNumber": "LOAN-002",
+    "borrowerId": "2",
+    "borrowerName": "Grace Kimaro",
+    "loanType": "Personal",
+    "amount": 3000000,
+    "status": "active",
+    "disbursedAt": "2024-01-18",
+    "dueDate": "2024-07-18"
+  },
+  {
+    "id": "3",
+    "groupId": "1",
+    "loanNumber": "LOAN-003",
+    "borrowerId": "3",
+    "borrowerName": "Mary Mwamba",
+    "loanType": "Business",
+    "amount": 7000000,
+    "status": "active",
+    "disbursedAt": "2024-01-20",
+    "dueDate": "2024-07-20"
+  },
+  {
+    "id": "4",
+    "groupId": "2",
+    "loanNumber": "LOAN-004",
+    "borrowerId": "4",
+    "borrowerName": "Peter Kimaro",
+    "loanType": "Business",
+    "amount": 5000000,
+    "status": "active",
+    "disbursedAt": "2024-01-12",
+    "dueDate": "2024-07-12"
+  },
+  {
+    "id": "5",
+    "groupId": "5",
+    "loanNumber": "LOAN-005",
+    "borrowerId": "8",
+    "borrowerName": "David Ochieng",
+    "loanType": "Business",
+    "amount": 4000000,
+    "status": "active",
+    "disbursedAt": "2024-01-10",
+    "dueDate": "2024-07-10"
+  },
+  {
+    "id": "6",
+    "groupId": "5",
+    "loanNumber": "LOAN-006",
+    "borrowerId": "9",
+    "borrowerName": "Dr. Amina Mwamba",
+    "loanType": "Business",
+    "amount": 4000000,
+    "status": "active",
+    "disbursedAt": "2024-01-22",
+    "dueDate": "2024-07-22"
+  },
+  {
+    "id": "7",
+    "groupId": "6",
+    "loanNumber": "LOAN-007",
+    "borrowerId": "9",
+    "borrowerName": "Dr. Amina Mwamba",
+    "loanType": "Business",
+    "amount": 3000000,
+    "status": "active",
+    "disbursedAt": "2024-01-19",
+    "dueDate": "2024-07-19"
+  }
+]

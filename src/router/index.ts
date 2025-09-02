@@ -49,6 +49,24 @@ const router = createRouter({
           meta: { title: "Add Borrowers Group" },
         },
         {
+          path: "borrowers/groups/:id",
+          name: "borrowers-groups-details",
+          component: () => import("@/pages/Borrowers/GroupDetails.vue"),
+          meta: { title: "Group Details" },
+        },
+        {
+          path: "borrowers/groups/:id/edit",
+          name: "borrowers-groups-edit",
+          component: () => import("@/pages/Borrowers/EditGroup.vue"),
+          meta: { title: "Edit Group" },
+        },
+        {
+          path: "borrowers/groups/:id/members",
+          name: "borrowers-groups-members",
+          component: () => import("@/pages/Borrowers/ManageMembers.vue"),
+          meta: { title: "Manage Members" },
+        },
+        {
           path: "borrowers/sms",
           name: "borrowers-sms",
           component: () => import("@/pages/Borrowers/SMS.vue"),
@@ -73,12 +91,6 @@ const router = createRouter({
           meta: { title: "KYC Verification" },
         },
         {
-          path: "borrowers/documents",
-          name: "borrowers-documents",
-          component: () => import("@/pages/Borrowers/Documents.vue"),
-          meta: { title: "Borrower Documents" },
-        },
-        {
           path: "borrowers/:id/documents",
           name: "borrower-documents",
           component: () => import("@/pages/Borrowers/Documents.vue"),
@@ -96,12 +108,6 @@ const router = createRouter({
           name: "loans",
           component: () => import("@/pages/Loans/List.vue"),
           meta: { title: "Loans" },
-        },
-        {
-          path: "loans/create",
-          name: "loan-create",
-          component: () => import("@/pages/Loans/Create.vue"),
-          meta: { title: "Create New Loan" },
         },
         {
           path: "loans/apply",

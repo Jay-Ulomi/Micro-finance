@@ -2,11 +2,24 @@
   <div class="space-y-6">
     <!-- Header -->
     <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-2xl font-bold text-neutral-900">Add Borrowers Group</h1>
-        <p class="text-sm text-neutral-600 mt-1">
-          If you give group loans, you can use this page to create group of borrowers.
-        </p>
+      <div class="flex items-center space-x-4">
+        <button
+          @click="$router.go(-1)"
+          class="p-2 text-neutral-500 hover:text-neutral-700 hover:bg-neutral-100 rounded-lg transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+        <div>
+          <h1 class="text-2xl font-bold text-neutral-900">Edit Group</h1>
+          <p class="text-sm text-neutral-600 mt-1">Update group information and settings</p>
+        </div>
       </div>
       <div class="flex space-x-3">
         <button @click="$router.go(-1)" class="btn-secondary">Cancel</button>
@@ -39,20 +52,57 @@
               d="M5 13l4 4L19 7"
             />
           </svg>
-          {{ isSubmitting ? "Creating..." : "Create Group" }}
+          {{ isSubmitting ? "Saving..." : "Save Changes" }}
         </button>
       </div>
     </div>
 
-    <!-- Form -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Loading State -->
+    <div v-if="isLoading" class="flex justify-center py-12">
+      <div
+        class="w-8 h-8 border-2 border-primary-300 border-t-primary-600 rounded-full animate-spin"
+      ></div>
+    </div>
+
+    <!-- Group Not Found -->
+    <div v-else-if="!group" class="card">
+      <div class="card-body">
+        <div class="text-center py-12">
+          <div
+            class="mx-auto w-16 h-16 bg-danger-100 rounded-full flex items-center justify-center mb-4"
+          >
+            <svg
+              class="w-8 h-8 text-danger-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+              />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-neutral-900 mb-2">Group Not Found</h3>
+          <p class="text-neutral-600 mb-6">
+            The group you're trying to edit doesn't exist or has been deleted.
+          </p>
+          <router-link to="/borrowers/groups" class="btn-primary"> Back to Groups </router-link>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Form -->
+    <div v-else class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       <!-- Main Form -->
       <div class="lg:col-span-2 space-y-6">
-        <!-- Required Fields -->
+        <!-- Basic Information -->
         <div class="card">
           <div class="card-header">
-            <h3 class="text-lg font-semibold text-neutral-900">Required Fields</h3>
-            <p class="text-sm text-neutral-500">Basic information required to create the group</p>
+            <h3 class="text-lg font-semibold text-neutral-900">Basic Information</h3>
+            <p class="text-sm text-neutral-500">Update the basic group details</p>
           </div>
           <div class="card-body space-y-6">
             <!-- Group Name -->
@@ -68,122 +118,43 @@
               <p v-if="errors.groupName" class="form-error">{{ errors.groupName }}</p>
             </div>
 
-            <!-- Borrowers Selection -->
+            <!-- Status -->
             <div>
-              <label class="form-label"> Borrowers <span class="text-danger-500">*</span> </label>
-              <div class="space-y-4">
-                <!-- Search Input -->
-                <div class="relative">
-                  <input
-                    v-model="borrowerSearch"
-                    type="text"
-                    class="form-input pl-10"
-                    placeholder="Search borrowers by name, email, or ID..."
-                    @input="filterBorrowers"
-                  />
-                  <svg
-                    class="absolute left-3 top-3 w-4 h-4 text-neutral-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    />
-                  </svg>
-                </div>
+              <label class="form-label">Status</label>
+              <select v-model="form.status" class="form-input">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="pending">Pending</option>
+              </select>
+            </div>
 
-                <!-- Selected Borrowers Count -->
-                <div class="flex items-center justify-between">
-                  <p class="text-sm text-neutral-600">
-                    {{ selectedBorrowers.length }} of {{ availableBorrowers.length }} borrowers
-                    selected
-                    <span class="text-neutral-400">(Max 200 allowed)</span>
-                  </p>
-                  <button
-                    v-if="selectedBorrowers.length > 0"
-                    @click="clearSelection"
-                    class="text-sm text-primary-600 hover:text-primary-700"
-                  >
-                    Clear All
-                  </button>
-                </div>
-
-                <!-- Borrowers List -->
-                <div class="max-h-96 overflow-y-auto border border-neutral-200 rounded-lg">
-                  <div
-                    v-for="borrower in filteredBorrowers"
-                    :key="borrower.id"
-                    class="flex items-center justify-between p-3 border-b border-neutral-100 last:border-b-0 hover:bg-neutral-50"
-                  >
-                    <div class="flex items-center space-x-3">
-                      <input
-                        :id="`borrower-${borrower.id}`"
-                        v-model="selectedBorrowers"
-                        :value="borrower.id"
-                        type="checkbox"
-                        class="w-4 h-4 text-primary-600 border-neutral-300 rounded focus:ring-primary-500"
-                        :disabled="
-                          selectedBorrowers.length >= 200 &&
-                          !selectedBorrowers.includes(borrower.id)
-                        "
-                      />
-                      <div>
-                        <p class="font-medium text-neutral-900">
-                          {{ borrower.firstName }} {{ borrower.lastName }}
-                        </p>
-                        <p class="text-sm text-neutral-500">
-                          {{ borrower.uniqueNumber }} - {{ borrower.email }}
-                        </p>
-                      </div>
-                    </div>
-                    <div class="text-right">
-                      <p class="text-sm font-medium text-neutral-900">
-                        {{ borrower.creditScore }}
-                      </p>
-                      <p class="text-xs text-neutral-500">Credit Score</p>
-                    </div>
-                  </div>
-                  <div
-                    v-if="filteredBorrowers.length === 0"
-                    class="p-6 text-center text-neutral-500"
-                  >
-                    No borrowers found matching your search.
-                  </div>
-                </div>
-                <p v-if="errors.borrowers" class="form-error">{{ errors.borrowers }}</p>
-              </div>
+            <!-- Description -->
+            <div>
+              <label class="form-label">Description</label>
+              <textarea
+                v-model="form.description"
+                rows="4"
+                class="form-input"
+                placeholder="Enter group description..."
+              ></textarea>
             </div>
           </div>
         </div>
 
-        <!-- Optional Fields -->
+        <!-- Group Leadership -->
         <div class="card">
           <div class="card-header">
-            <h3 class="text-lg font-semibold text-neutral-900">Optional Fields</h3>
-            <p class="text-sm text-neutral-500">
-              Additional information to better manage the group
-            </p>
+            <h3 class="text-lg font-semibold text-neutral-900">Group Leadership</h3>
+            <p class="text-sm text-neutral-500">Assign group leaders and officers</p>
           </div>
           <div class="card-body space-y-6">
             <!-- Group Leader -->
             <div>
               <label class="form-label">Group Leader</label>
-              <select
-                v-model="form.groupLeader"
-                class="form-input"
-                :disabled="selectedBorrowers.length === 0"
-              >
-                <option value="">Select Borrowers above to update this field</option>
-                <option
-                  v-for="borrowerId in selectedBorrowers"
-                  :key="borrowerId"
-                  :value="borrowerId"
-                >
-                  {{ getBorrowerName(borrowerId) }}
+              <select v-model="form.groupLeader" class="form-input">
+                <option value="">Select group leader</option>
+                <option v-for="member in members" :key="member.id" :value="member.id">
+                  {{ member.firstName }} {{ member.lastName }}
                 </option>
               </select>
             </div>
@@ -210,47 +181,39 @@
                 placeholder="Enter collector name"
               />
             </div>
+          </div>
+        </div>
 
-            <!-- Meeting Schedule -->
-            <div>
-              <label class="form-label">Meeting Schedule</label>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-sm font-medium text-neutral-700 mb-1">
-                    Day of Week
-                  </label>
-                  <select v-model="form.meetingDay" class="form-input">
-                    <option value="">Select day</option>
-                    <option value="monday">Monday</option>
-                    <option value="tuesday">Tuesday</option>
-                    <option value="wednesday">Wednesday</option>
-                    <option value="thursday">Thursday</option>
-                    <option value="friday">Friday</option>
-                    <option value="saturday">Saturday</option>
-                    <option value="sunday">Sunday</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-neutral-700 mb-1"> Time </label>
-                  <input v-model="form.meetingTime" type="time" class="form-input" />
-                </div>
+        <!-- Meeting Schedule -->
+        <div class="card">
+          <div class="card-header">
+            <h3 class="text-lg font-semibold text-neutral-900">Meeting Schedule</h3>
+            <p class="text-sm text-neutral-500">Set up regular meeting times</p>
+          </div>
+          <div class="card-body space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="form-label">Day of Week</label>
+                <select v-model="form.meetingDay" class="form-input">
+                  <option value="">Select day</option>
+                  <option value="monday">Monday</option>
+                  <option value="tuesday">Tuesday</option>
+                  <option value="wednesday">Wednesday</option>
+                  <option value="thursday">Thursday</option>
+                  <option value="friday">Friday</option>
+                  <option value="saturday">Saturday</option>
+                  <option value="sunday">Sunday</option>
+                </select>
               </div>
-            </div>
-
-            <!-- Description -->
-            <div>
-              <label class="form-label">Description</label>
-              <textarea
-                v-model="form.description"
-                rows="4"
-                class="form-input"
-                placeholder="Enter group description..."
-              ></textarea>
+              <div>
+                <label class="form-label">Time</label>
+                <input v-model="form.meetingTime" type="time" class="form-input" />
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Custom Fields Section -->
+        <!-- Custom Fields -->
         <div class="card">
           <div class="card-header">
             <div class="flex items-center justify-between">
@@ -351,21 +314,27 @@
               </span>
             </div>
             <div class="flex items-center justify-between">
+              <span class="text-sm text-neutral-600">Status:</span>
+              <span class="text-sm font-medium text-neutral-900">
+                {{ form.status }}
+              </span>
+            </div>
+            <div class="flex items-center justify-between">
               <span class="text-sm text-neutral-600">Members:</span>
               <span class="text-sm font-medium text-neutral-900">
-                {{ selectedBorrowers.length }}
+                {{ group?.memberCount || 0 }}
               </span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-sm text-neutral-600">Group Leader:</span>
               <span class="text-sm font-medium text-neutral-900">
-                {{ form.groupLeader ? getBorrowerName(form.groupLeader) : "Not set" }}
+                {{ getMemberName(form.groupLeader) || "Not assigned" }}
               </span>
             </div>
             <div class="flex items-center justify-between">
               <span class="text-sm text-neutral-600">Loan Officer:</span>
               <span class="text-sm font-medium text-neutral-900">
-                {{ form.loanOfficer || "Not set" }}
+                {{ form.loanOfficer || "Not assigned" }}
               </span>
             </div>
             <div class="flex items-center justify-between">
@@ -402,10 +371,7 @@
               </div>
               <div class="flex items-center space-x-2">
                 <svg
-                  :class="[
-                    'w-4 h-4',
-                    selectedBorrowers.length > 0 ? 'text-success-500' : 'text-neutral-400',
-                  ]"
+                  :class="['w-4 h-4', form.status ? 'text-success-500' : 'text-neutral-400']"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -417,27 +383,33 @@
                     d="M5 13l4 4L19 7"
                   />
                 </svg>
-                <span class="text-sm text-neutral-600"> At least 1 borrower selected </span>
+                <span class="text-sm text-neutral-600">Status is selected</span>
               </div>
-              <div class="flex items-center space-x-2">
-                <svg
-                  :class="[
-                    'w-4 h-4',
-                    selectedBorrowers.length <= 200 ? 'text-success-500' : 'text-danger-500',
-                  ]"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
+            </div>
+          </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="card border-danger-200">
+          <div class="card-header">
+            <h3 class="text-lg font-semibold text-danger-600">Danger Zone</h3>
+          </div>
+          <div class="card-body">
+            <div class="space-y-3">
+              <p class="text-sm text-neutral-600">
+                Once you delete a group, there is no going back. Please be certain.
+              </p>
+              <button @click="deleteGroup" class="w-full btn-danger text-sm">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M5 13l4 4L19 7"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                   />
                 </svg>
-                <span class="text-sm text-neutral-600"> Max 200 borrowers limit </span>
-              </div>
+                Delete Group
+              </button>
             </div>
           </div>
         </div>
@@ -448,16 +420,28 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
+import { groupsData, groupMembersData } from "@/data";
 
 // Types
-interface Borrower {
+interface Group {
+  id: string;
+  name: string;
+  status: "active" | "inactive" | "pending";
+  memberCount: number;
+  leaderId?: string;
+  loanOfficer?: string;
+  collectorName?: string;
+  meetingDay?: string;
+  meetingTime?: string;
+  description?: string;
+  customFields: CustomField[];
+}
+
+interface Member {
   id: string;
   firstName: string;
   lastName: string;
-  email: string;
-  uniqueNumber: string;
-  creditScore: number;
 }
 
 interface CustomField {
@@ -468,7 +452,7 @@ interface CustomField {
 
 interface GroupForm {
   groupName: string;
-  borrowers: string[];
+  status: "active" | "inactive" | "pending";
   groupLeader: string;
   loanOfficer: string;
   collectorName: string;
@@ -480,15 +464,15 @@ interface GroupForm {
 
 // Reactive data
 const router = useRouter();
+const route = useRoute();
+const isLoading = ref(false);
 const isSubmitting = ref(false);
-const borrowerSearch = ref("");
-const availableBorrowers = ref<Borrower[]>([]);
-const selectedBorrowers = ref<string[]>([]);
-const filteredBorrowers = ref<Borrower[]>([]);
+const group = ref<Group | null>(null);
+const members = ref<Member[]>([]);
 
 const form = ref<GroupForm>({
   groupName: "",
-  borrowers: [],
+  status: "active",
   groupLeader: "",
   loanOfficer: "",
   collectorName: "",
@@ -502,52 +486,54 @@ const errors = ref<Record<string, string>>({});
 
 // Computed properties
 const isFormValid = computed(() => {
-  return (
-    form.value.groupName.trim() !== "" &&
-    selectedBorrowers.value.length > 0 &&
-    selectedBorrowers.value.length <= 200
-  );
+  return form.value.groupName.trim() !== "";
 });
 
 // Methods
-const loadBorrowers = async () => {
+const loadGroupData = async () => {
+  isLoading.value = true;
   try {
+    const groupId = route.params.id as string;
+
     // In a real app, this would be an API call
-    const response = await fetch("/src/data/borrowers.json");
-    const data = await response.json();
-    availableBorrowers.value = data.borrowers.map((borrower: any) => ({
-      id: borrower.id,
-      firstName: borrower.firstName,
-      lastName: borrower.lastName,
-      email: borrower.email,
-      uniqueNumber: borrower.uniqueNumber,
-      creditScore: borrower.creditScore,
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // Find group from JSON data
+    const foundGroup = groupsData.find((g) => g.id === groupId);
+    if (foundGroup) {
+      group.value = foundGroup;
+
+      // Populate form with existing data
+      form.value = {
+        groupName: foundGroup.name,
+        status: foundGroup.status,
+        groupLeader: foundGroup.leaderId || "",
+        loanOfficer: foundGroup.loanOfficer || "",
+        collectorName: foundGroup.collectorName || "",
+        meetingDay: foundGroup.meetingDay || "",
+        meetingTime: foundGroup.meetingTime || "",
+        description: foundGroup.description || "",
+        customFields: [...foundGroup.customFields],
+      };
+    }
+
+    // Load members for this group
+    const groupMembers = groupMembersData.filter((member) => member.groupId === groupId);
+    members.value = groupMembers.map((member) => ({
+      id: member.id,
+      firstName: member.firstName,
+      lastName: member.lastName,
     }));
-    filteredBorrowers.value = availableBorrowers.value;
   } catch (error) {
-    console.error("Error loading borrowers:", error);
+    console.error("Error loading group data:", error);
+  } finally {
+    isLoading.value = false;
   }
 };
 
-const filterBorrowers = () => {
-  const search = borrowerSearch.value.toLowerCase();
-  filteredBorrowers.value = availableBorrowers.value.filter(
-    (borrower) =>
-      borrower.firstName.toLowerCase().includes(search) ||
-      borrower.lastName.toLowerCase().includes(search) ||
-      borrower.email.toLowerCase().includes(search) ||
-      borrower.uniqueNumber.toLowerCase().includes(search),
-  );
-};
-
-const getBorrowerName = (borrowerId: string) => {
-  const borrower = availableBorrowers.value.find((b) => b.id === borrowerId);
-  return borrower ? `${borrower.firstName} ${borrower.lastName}` : "Unknown";
-};
-
-const clearSelection = () => {
-  selectedBorrowers.value = [];
-  form.value.groupLeader = "";
+const getMemberName = (memberId: string) => {
+  const member = members.value.find((m) => m.id === memberId);
+  return member ? `${member.firstName} ${member.lastName}` : null;
 };
 
 const addCustomField = () => {
@@ -569,14 +555,6 @@ const validateForm = () => {
     errors.value.groupName = "Group name is required";
   }
 
-  if (selectedBorrowers.value.length === 0) {
-    errors.value.borrowers = "At least one borrower must be selected";
-  }
-
-  if (selectedBorrowers.value.length > 200) {
-    errors.value.borrowers = "Maximum 200 borrowers allowed per group";
-  }
-
   return Object.keys(errors.value).length === 0;
 };
 
@@ -588,28 +566,47 @@ const saveGroup = async () => {
   isSubmitting.value = true;
 
   try {
-    // Update form with selected borrowers
-    form.value.borrowers = selectedBorrowers.value;
-
     // In a real app, this would be an API call
-    console.log("Creating group:", form.value);
+    console.log("Updating group:", form.value);
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // Show success message and redirect
-    alert("Group created successfully!");
-    router.push("/borrowers/groups");
+    alert("Group updated successfully!");
+    router.push(`/borrowers/groups/${route.params.id}`);
   } catch (error) {
-    console.error("Error creating group:", error);
-    alert("Error creating group. Please try again.");
+    console.error("Error updating group:", error);
+    alert("Error updating group. Please try again.");
   } finally {
     isSubmitting.value = false;
   }
 };
 
+const deleteGroup = async () => {
+  if (
+    confirm(
+      "Are you sure you want to delete this group? This action cannot be undone and will affect all associated loans and members.",
+    )
+  ) {
+    try {
+      // In a real app, this would be an API call
+      console.log("Deleting group:", route.params.id);
+
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      alert("Group deleted successfully!");
+      router.push("/borrowers/groups");
+    } catch (error) {
+      console.error("Error deleting group:", error);
+      alert("Error deleting group. Please try again.");
+    }
+  }
+};
+
 // Lifecycle
 onMounted(() => {
-  loadBorrowers();
+  loadGroupData();
 });
 </script>
