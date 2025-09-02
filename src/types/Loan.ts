@@ -1,3 +1,5 @@
+import type { Customer } from "./Customer";
+
 export interface Loan {
   id: string;
   loanNumber: string;
@@ -22,23 +24,23 @@ export interface Loan {
 }
 
 export enum LoanType {
-  PERSONAL = 'personal',
-  BUSINESS = 'business',
-  MORTGAGE = 'mortgage',
-  VEHICLE = 'vehicle',
-  EDUCATION = 'education'
+  PERSONAL = "personal",
+  BUSINESS = "business",
+  MORTGAGE = "mortgage",
+  VEHICLE = "vehicle",
+  EDUCATION = "education",
 }
 
 export enum LoanStatus {
-  PENDING = 'pending',
-  UNDER_REVIEW = 'under_review',
-  APPROVED = 'approved',
-  DISBURSED = 'disbursed',
-  ACTIVE = 'active',
-  OVERDUE = 'overdue',
-  DEFAULTED = 'defaulted',
-  CLOSED = 'closed',
-  REJECTED = 'rejected'
+  PENDING = "pending",
+  UNDER_REVIEW = "under_review",
+  APPROVED = "approved",
+  DISBURSED = "disbursed",
+  ACTIVE = "active",
+  OVERDUE = "overdue",
+  DEFAULTED = "defaulted",
+  CLOSED = "closed",
+  REJECTED = "rejected",
 }
 
 export interface Collateral {
@@ -50,11 +52,11 @@ export interface Collateral {
 }
 
 export enum CollateralType {
-  REAL_ESTATE = 'real_estate',
-  VEHICLE = 'vehicle',
-  EQUIPMENT = 'equipment',
-  INVENTORY = 'inventory',
-  SECURITIES = 'securities'
+  REAL_ESTATE = "real_estate",
+  VEHICLE = "vehicle",
+  EQUIPMENT = "equipment",
+  INVENTORY = "inventory",
+  SECURITIES = "securities",
 }
 
 export interface Guarantor {
@@ -77,12 +79,12 @@ export interface LoanDocument {
 }
 
 export enum LoanDocumentType {
-  APPLICATION_FORM = 'application_form',
-  INCOME_PROOF = 'income_proof',
-  BANK_STATEMENTS = 'bank_statements',
-  TAX_RETURNS = 'tax_returns',
-  BUSINESS_PLAN = 'business_plan',
-  COLLATERAL_DOCS = 'collateral_docs'
+  APPLICATION_FORM = "application_form",
+  INCOME_PROOF = "income_proof",
+  BANK_STATEMENTS = "bank_statements",
+  TAX_RETURNS = "tax_returns",
+  BUSINESS_PLAN = "business_plan",
+  COLLATERAL_DOCS = "collateral_docs",
 }
 
 export interface LoanSchedule {
@@ -98,10 +100,10 @@ export interface LoanSchedule {
 }
 
 export enum InstallmentStatus {
-  PENDING = 'pending',
-  PAID = 'paid',
-  OVERDUE = 'overdue',
-  PARTIAL = 'partial'
+  PENDING = "pending",
+  PAID = "paid",
+  OVERDUE = "overdue",
+  PARTIAL = "partial",
 }
 
 export interface CreateLoanData {

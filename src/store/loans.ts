@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { loansApi } from "@/api/loans";
+import { loansApi } from "@/services/api/loans";
 import type { Loan, CreateLoanData } from "@/types/Loan";
 
 export const useLoansStore = defineStore("loans", () => {
@@ -25,7 +25,7 @@ export const useLoansStore = defineStore("loans", () => {
           loan.loanNumber.toLowerCase().includes(query) ||
           loan.customer.firstName.toLowerCase().includes(query) ||
           loan.customer.lastName.toLowerCase().includes(query) ||
-          loan.purpose.toLowerCase().includes(query)
+          loan.purpose.toLowerCase().includes(query),
       );
     }
 
@@ -34,9 +34,7 @@ export const useLoansStore = defineStore("loans", () => {
     }
 
     if (customerFilter.value) {
-      filtered = filtered.filter(
-        (loan) => loan.customerId === customerFilter.value
-      );
+      filtered = filtered.filter((loan) => loan.customerId === customerFilter.value);
     }
 
     return filtered;
@@ -49,7 +47,7 @@ export const useLoansStore = defineStore("loans", () => {
       search?: string;
       status?: string;
       customerId?: string;
-    } = {}
+    } = {},
   ) => {
     try {
       isLoading.value = true;
@@ -70,8 +68,7 @@ export const useLoansStore = defineStore("loans", () => {
 
       if (params.search !== undefined) searchQuery.value = params.search;
       if (params.status !== undefined) statusFilter.value = params.status;
-      if (params.customerId !== undefined)
-        customerFilter.value = params.customerId;
+      if (params.customerId !== undefined) customerFilter.value = params.customerId;
 
       return response;
     } catch (err: any) {
@@ -163,10 +160,7 @@ export const useLoansStore = defineStore("loans", () => {
     }
   };
 
-  const approveLoan = async (
-    id: string,
-    data: { approvedAmount?: number; notes?: string }
-  ) => {
+  const approveLoan = async (id: string, data: { approvedAmount?: number; notes?: string }) => {
     try {
       isLoading.value = true;
       error.value = null;
@@ -216,10 +210,7 @@ export const useLoansStore = defineStore("loans", () => {
     }
   };
 
-  const disburseLoan = async (
-    id: string,
-    data: { disbursementDate: string; notes?: string }
-  ) => {
+  const disburseLoan = async (id: string, data: { disbursementDate: string; notes?: string }) => {
     try {
       isLoading.value = true;
       error.value = null;
@@ -244,10 +235,7 @@ export const useLoansStore = defineStore("loans", () => {
     }
   };
 
-  const closeLoan = async (
-    id: string,
-    data: { closureDate: string; notes?: string }
-  ) => {
+  const closeLoan = async (id: string, data: { closureDate: string; notes?: string }) => {
     try {
       isLoading.value = true;
       error.value = null;
@@ -307,8 +295,7 @@ export const useLoansStore = defineStore("loans", () => {
 
       return updatedLoan;
     } catch (err: any) {
-      error.value =
-        err.response?.data?.message || "Failed to generate loan schedule";
+      error.value = err.response?.data?.message || "Failed to generate loan schedule";
       throw err;
     } finally {
       isLoading.value = false;

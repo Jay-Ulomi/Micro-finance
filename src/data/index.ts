@@ -13,4 +13,4 @@ export type {
   BorrowerStatistics,
   LoanStatistics,
   RepaymentStatistics,
-} from "../services/dataService";
+} from "../services/mock/dataService";

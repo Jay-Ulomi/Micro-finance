@@ -1,3 +1,5 @@
+import type { Loan, LoanSchedule } from "./Loan";
+
 export interface Repayment {
   id: string;
   loanId: string;

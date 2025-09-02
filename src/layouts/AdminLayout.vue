@@ -1,19 +1,19 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-neutral-50">
     <!-- Sidebar -->
     <aside
-      class="fixed inset-y-0 left-0 z-50 shadow-xl transform transition-transform duration-300 ease-in-out border-r border-slate-700"
+      class="fixed inset-y-0 left-0 z-50 shadow-xl transform transition-transform duration-300 ease-in-out border-r border-primary-200"
       :class="[
         !sidebarOpen ? '-translate-x-full' : '',
         sidebarCollapsed ? 'w-20' : 'w-72',
-        'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white',
+        'bg-gradient-to-br from-neutral-900 via-neutral-800 to-primary-900 text-white',
       ]"
     >
       <!-- Sidebar content -->
       <div class="flex flex-col h-full">
         <!-- Sidebar header -->
         <div
-          class="flex items-center justify-between h-14 px-6 border-b border-gray-200 bg-gradient-to-r from-primary-50 to-white"
+          class="flex items-center justify-between h-14 px-6 border-b border-primary-300 bg-gradient-to-r from-primary-100 to-primary-50"
         >
           <h1
             :class="[
@@ -27,7 +27,7 @@
             <!-- Toggle button for large screens -->
             <button
               @click="toggleSidebar"
-              class="hidden lg:flex p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              class="hidden lg:flex p-2 rounded-lg hover:bg-neutral-100 transition-colors"
               :title="sidebarCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'"
             >
               <ChevronLeftIcon
@@ -40,7 +40,7 @@
             <!-- Close button for mobile -->
             <button
               @click="sidebarOpen = false"
-              class="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              class="lg:hidden p-2 rounded-lg hover:bg-neutral-100 transition-colors"
             >
               <XMarkIcon class="w-5 h-5 text-gray-600" />
             </button>
@@ -59,14 +59,14 @@
                 :class="[
                   'flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 cursor-pointer border border-transparent whitespace-nowrap relative',
                   isRouteActive(item.to)
-                    ? 'bg-slate-700 text-white border-slate-600 shadow-lg'
-                    : 'text-slate-300 hover:bg-slate-800 hover:text-white hover:border-slate-600',
+                    ? 'bg-primary-600 text-white border-primary-500 shadow-lg'
+                    : 'text-neutral-300 hover:bg-primary-800 hover:text-white hover:border-primary-600',
                 ]"
                 @click="$router.push(item.to)"
                 @mouseenter="sidebarCollapsed && showMainTooltip(item.label)"
                 @mouseleave="sidebarCollapsed && hideMainTooltip()"
               >
-                <component :is="item.icon" class="w-5 h-5 mr-3 text-slate-400 flex-shrink-0" />
+                <component :is="item.icon" class="w-5 h-5 mr-3 text-primary-300 flex-shrink-0" />
                 <span
                   v-if="!sidebarCollapsed"
                   class="font-semibold truncate transition-all duration-300"
@@ -77,7 +77,7 @@
                 <!-- Tooltip for main items when collapsed -->
                 <div
                   v-if="sidebarCollapsed && mainTooltipVisible === item.label"
-                  class="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 z-50 bg-slate-800 text-white px-3 py-2 rounded-lg shadow-xl border border-slate-600 whitespace-nowrap"
+                  class="absolute left-full ml-2 top-1/2 transform -translate-y-1/2 z-50 bg-primary-800 text-white px-3 py-2 rounded-lg shadow-xl border border-primary-600 whitespace-nowrap"
                   @mouseenter="mainTooltipVisible = item.label"
                   @mouseleave="hideMainTooltip()"
                 >
@@ -91,13 +91,16 @@
                   :class="[
                     'w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 border border-transparent whitespace-nowrap',
                     isDropdownRouteActive(item)
-                      ? 'bg-slate-700 text-white border-slate-600 shadow-lg'
-                      : 'text-slate-300 hover:bg-slate-800 hover:text-white hover:border-slate-600',
+                      ? 'bg-primary-600 text-white border-primary-500 shadow-lg'
+                      : 'text-neutral-300 hover:bg-primary-800 hover:text-white hover:border-primary-600',
                   ]"
                   @click="toggleDropdown(item.name)"
                 >
                   <div class="flex items-center min-w-0">
-                    <component :is="item.icon" class="w-5 h-5 mr-3 text-slate-400 flex-shrink-0" />
+                    <component
+                      :is="item.icon"
+                      class="w-5 h-5 mr-3 text-primary-300 flex-shrink-0"
+                    />
                     <span
                       v-if="!sidebarCollapsed"
                       class="font-semibold truncate transition-all duration-300"
@@ -108,7 +111,7 @@
                   <ChevronDownIcon
                     v-if="!sidebarCollapsed"
                     :class="[
-                      'w-4 h-4 transition-transform duration-200 text-slate-400 flex-shrink-0',
+                      'w-4 h-4 transition-transform duration-200 text-primary-300 flex-shrink-0',
                       openDropdowns.has(item.name) ? 'rotate-180' : '',
                     ]"
                   />
@@ -117,7 +120,7 @@
                 <!-- Dropdown items -->
                 <div
                   v-if="openDropdowns.has(item.name) && !sidebarCollapsed"
-                  class="ml-6 space-y-1 pl-4 border-l-2 border-slate-600"
+                  class="ml-6 space-y-1 pl-4 border-l-2 border-primary-600"
                 >
                   <router-link
                     v-for="dropdownItem in item.dropdownItems"
@@ -126,11 +129,11 @@
                     :class="[
                       'flex items-center px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 whitespace-nowrap',
                       isRouteActive(dropdownItem.to)
-                        ? 'bg-slate-600 text-white border border-slate-500 shadow-md'
-                        : 'text-slate-400 hover:bg-slate-700 hover:text-white hover:border-slate-500 border border-transparent',
+                        ? 'bg-primary-500 text-white border border-primary-400 shadow-md'
+                        : 'text-primary-200 hover:bg-primary-700 hover:text-white hover:border-primary-500 border border-transparent',
                     ]"
                   >
-                    <div class="w-2 h-2 bg-slate-400 rounded-full mr-3 flex-shrink-0"></div>
+                    <div class="w-2 h-2 bg-primary-400 rounded-full mr-3 flex-shrink-0"></div>
                     <span class="font-medium truncate">{{ dropdownItem.label }}</span>
                   </router-link>
                 </div>
@@ -181,7 +184,7 @@
               </svg>
               <span
                 v-if="notificationCount > 0"
-                class="absolute top-0 right-0 block w-2 h-2 bg-red-400 rounded-full"
+                class="absolute top-0 right-0 block w-2 h-2 bg-danger-400 rounded-full"
               ></span>
             </button>
 
@@ -258,7 +261,7 @@ import {
   ChevronDownIcon,
   CalendarIcon,
   DocumentTextIcon,
-  PiggyBankIcon,
+  // PiggyBankIcon, // Not available in Heroicons v2, using BanknotesIcon instead
   ArrowPathIcon,
   UserGroupIcon,
   BuildingLibraryIcon,

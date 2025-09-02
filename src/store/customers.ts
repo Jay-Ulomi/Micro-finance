@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { customersApi } from "@/api/customers";
+import { customersApi } from "@/services/api/customers";
 import type { Customer, CreateCustomerData } from "@/types/Customer";
 
 export const useCustomersStore = defineStore("customers", () => {

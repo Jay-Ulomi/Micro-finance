@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-// import { authApi } from "@/api/auth";
+// import { authApi } from "@/services/api/auth";
 import { demoUsers } from "@/utils/demoData";
 import type { User, LoginCredentials, RegisterData } from "@/types/User";
 

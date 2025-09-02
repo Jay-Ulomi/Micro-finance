@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { repaymentsApi } from "@/api/repayments";
+import { repaymentsApi } from "@/services/api/repayments";
 import type { Repayment, CreateRepaymentData } from "@/types/Repayment";
 
 export const useRepaymentsStore = defineStore("repayments", () => {
@@ -21,34 +21,26 @@ export const useRepaymentsStore = defineStore("repayments", () => {
     let filtered = repayments.value;
 
     if (loanFilter.value) {
-      filtered = filtered.filter(
-        (repayment) => repayment.loanId === loanFilter.value
-      );
+      filtered = filtered.filter((repayment) => repayment.loanId === loanFilter.value);
     }
 
     if (customerFilter.value) {
-      filtered = filtered.filter(
-        (repayment) => repayment.loan.customerId === customerFilter.value
-      );
+      filtered = filtered.filter((repayment) => repayment.loan.customerId === customerFilter.value);
     }
 
     if (statusFilter.value) {
-      filtered = filtered.filter(
-        (repayment) => repayment.status === statusFilter.value
-      );
+      filtered = filtered.filter((repayment) => repayment.status === statusFilter.value);
     }
 
     if (startDateFilter.value) {
       filtered = filtered.filter(
-        (repayment) =>
-          new Date(repayment.paidAt) >= new Date(startDateFilter.value)
+        (repayment) => new Date(repayment.paidAt) >= new Date(startDateFilter.value),
       );
     }
 
     if (endDateFilter.value) {
       filtered = filtered.filter(
-        (repayment) =>
-          new Date(repayment.paidAt) <= new Date(endDateFilter.value)
+        (repayment) => new Date(repayment.paidAt) <= new Date(endDateFilter.value),
       );
     }
 
@@ -64,7 +56,7 @@ export const useRepaymentsStore = defineStore("repayments", () => {
       status?: string;
       startDate?: string;
       endDate?: string;
-    } = {}
+    } = {},
   ) => {
     try {
       isLoading.value = true;
@@ -86,11 +78,9 @@ export const useRepaymentsStore = defineStore("repayments", () => {
       limit.value = response.limit;
 
       if (params.loanId !== undefined) loanFilter.value = params.loanId;
-      if (params.customerId !== undefined)
-        customerFilter.value = params.customerId;
+      if (params.customerId !== undefined) customerFilter.value = params.customerId;
       if (params.status !== undefined) statusFilter.value = params.status;
-      if (params.startDate !== undefined)
-        startDateFilter.value = params.startDate;
+      if (params.startDate !== undefined) startDateFilter.value = params.startDate;
       if (params.endDate !== undefined) endDateFilter.value = params.endDate;
 
       return response;
@@ -221,8 +211,7 @@ export const useRepaymentsStore = defineStore("repayments", () => {
       const overdue = await repaymentsApi.getOverdueInstallments(loanId);
       return overdue;
     } catch (err: any) {
-      error.value =
-        err.response?.data?.message || "Failed to fetch overdue installments";
+      error.value = err.response?.data?.message || "Failed to fetch overdue installments";
       throw err;
     } finally {
       isLoading.value = false;
@@ -237,8 +226,7 @@ export const useRepaymentsStore = defineStore("repayments", () => {
       const history = await repaymentsApi.getRepaymentHistory(loanId);
       return history;
     } catch (err: any) {
-      error.value =
-        err.response?.data?.message || "Failed to fetch repayment history";
+      error.value = err.response?.data?.message || "Failed to fetch repayment history";
       throw err;
     } finally {
       isLoading.value = false;

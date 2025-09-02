@@ -3,8 +3,8 @@
     <!-- Page header -->
     <div class="flex items-center justify-between">
       <div>
-        <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
-        <p class="mt-1 text-sm text-gray-500">Overview of your loan management system</p>
+        <h1 class="text-2xl font-bold text-neutral-900">Dashboard</h1>
+        <p class="mt-1 text-sm text-neutral-500">Overview of your loan management system</p>
       </div>
       <div class="flex space-x-3">
         <!-- Date Picker -->
@@ -45,9 +45,9 @@
         <div class="card-body">
           <div class="flex items-center">
             <div class="flex-shrink-0">
-              <div class="w-8 h-8 bg-blue-100 rounded-md flex items-center justify-center">
+              <div class="w-8 h-8 bg-primary-100 rounded-md flex items-center justify-center">
                 <svg
-                  class="w-5 h-5 text-blue-600"
+                  class="w-5 h-5 text-primary-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -62,8 +62,8 @@
               </div>
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium text-gray-500">Total Customers</p>
-              <p class="text-2xl font-semibold text-gray-900">{{ stats.totalCustomers || 0 }}</p>
+              <p class="text-sm font-medium text-neutral-500">Total Customers</p>
+              <p class="text-2xl font-semibold text-neutral-900">{{ stats.totalCustomers || 0 }}</p>
             </div>
           </div>
         </div>
@@ -90,8 +90,8 @@
               </div>
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium text-gray-500">Active Loans</p>
-              <p class="text-2xl font-semibold text-gray-900">{{ stats.activeLoans || 0 }}</p>
+              <p class="text-sm font-medium text-neutral-500">Active Loans</p>
+              <p class="text-2xl font-semibold text-neutral-900">{{ stats.activeLoans || 0 }}</p>
             </div>
           </div>
         </div>
@@ -118,8 +118,8 @@
               </div>
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium text-gray-500">Overdue Loans</p>
-              <p class="text-2xl font-semibold text-gray-900">{{ stats.overdueLoans || 0 }}</p>
+              <p class="text-sm font-medium text-neutral-500">Overdue Loans</p>
+              <p class="text-2xl font-semibold text-neutral-900">{{ stats.overdueLoans || 0 }}</p>
             </div>
           </div>
         </div>
@@ -146,8 +146,8 @@
               </div>
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium text-gray-500">Total Disbursed</p>
-              <p class="text-2xl font-semibold text-gray-900">
+              <p class="text-sm font-medium text-neutral-500">Total Disbursed</p>
+              <p class="text-2xl font-semibold text-neutral-900">
                 {{ formatCurrency(stats.totalDisbursed || 0) }}
               </p>
             </div>
@@ -161,7 +161,7 @@
       <!-- Loan Status Distribution -->
       <div class="card">
         <div class="card-header">
-          <h3 class="text-base font-medium text-gray-900">Loan Status Distribution</h3>
+          <h3 class="text-base font-medium text-neutral-900">Loan Status Distribution</h3>
         </div>
         <div class="card-body">
           <canvas ref="loanStatusChart" class="w-full h-64"></canvas>
@@ -171,7 +171,7 @@
       <!-- Monthly Loan Trends -->
       <div class="card">
         <div class="card-header">
-          <h3 class="text-base font-medium text-gray-900">Monthly Loan Trends</h3>
+          <h3 class="text-base font-medium text-neutral-900">Monthly Loan Trends</h3>
         </div>
         <div class="card-body">
           <canvas ref="monthlyTrendChart" class="w-full h-64"></canvas>
@@ -182,7 +182,7 @@
     <!-- Recent Activity -->
     <div class="card">
       <div class="card-header">
-        <h3 class="text-base font-medium text-gray-900">Recent Activity</h3>
+        <h3 class="text-base font-medium text-neutral-900">Recent Activity</h3>
       </div>
       <div class="card-body">
         <div class="flow-root">
@@ -194,12 +194,12 @@
             >
               <div
                 v-if="index !== recentActivities.length - 1"
-                class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
+                class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-neutral-200"
               ></div>
               <div class="relative flex space-x-3">
                 <div>
                   <span
-                    class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white"
+                    class="h-8 w-8 rounded-full bg-primary-500 flex items-center justify-center ring-8 ring-white"
                   >
                     <svg
                       class="h-5 w-5 text-white"
@@ -218,12 +218,12 @@
                 </div>
                 <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                   <div>
-                    <p class="text-sm text-gray-500">
+                    <p class="text-sm text-neutral-500">
                       {{ activity.description }}
-                      <span class="font-medium text-gray-900">{{ activity.customerName }}</span>
+                      <span class="font-medium text-neutral-900">{{ activity.customerName }}</span>
                     </p>
                   </div>
-                  <div class="text-right text-sm whitespace-nowrap text-gray-500">
+                  <div class="text-right text-sm whitespace-nowrap text-neutral-500">
                     <time>{{ getRelativeTime(activity.timestamp) }}</time>
                   </div>
                 </div>
@@ -239,7 +239,7 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive } from "vue";
 import { Chart, registerables } from "chart.js";
-import { reportsApi } from "@/api/reports";
+import { reportsApi } from "@/services/api/reports";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { getRelativeTime } from "@/utils/formatDate";
 
@@ -277,8 +277,14 @@ const recentActivities = ref([
   },
 ]);
 
+const selectedDate = ref<Date | null>(null);
 const loanStatusChart = ref<HTMLCanvasElement>();
 const monthlyTrendChart = ref<HTMLCanvasElement>();
+
+const handleDateChange = (date: Date | null) => {
+  selectedDate.value = date;
+  // Handle date change logic here
+};
 
 onMounted(async () => {
   try {
@@ -304,11 +310,11 @@ const initializeCharts = () => {
           {
             data: [stats.activeLoans, 5, 8, stats.overdueLoans, 12],
             backgroundColor: [
-              "#10B981", // green
-              "#F59E0B", // yellow
-              "#3B82F6", // blue
-              "#EF4444", // red
-              "#6B7280", // gray
+              "#22c55e", // success-500 (green)
+              "#f0a500", // primary-500 (golden orange)
+              "#cf7500", // primary-600 (darker orange)
+              "#ef4444", // danger-500 (red)
+              "#737373", // neutral-500 (gray)
             ],
           },
         ],
@@ -335,8 +341,8 @@ const initializeCharts = () => {
           {
             label: "Loans Disbursed",
             data: [12, 19, 15, 25, 22, 30],
-            borderColor: "#3B82F6",
-            backgroundColor: "rgba(59, 130, 246, 0.1)",
+            borderColor: "#f0a500", // primary-500
+            backgroundColor: "rgba(240, 165, 0, 0.1)",
             tension: 0.4,
           },
         ],

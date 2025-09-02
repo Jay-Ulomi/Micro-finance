@@ -303,6 +303,21 @@ export const reportsApi = {
     return response.data;
   },
 
+  // Dashboard stats
+  async getDashboardStats(): Promise<{
+    totalCustomers: number;
+    totalLoans: number;
+    activeLoans: number;
+    overdueLoans: number;
+    totalDisbursed: number;
+    totalCollected: number;
+    monthlyDisbursements: number;
+    monthlyCollections: number;
+  }> {
+    const response = await api.get("/dashboard/stats");
+    return response.data;
+  },
+
   // Analytics
   async getAnalytics(params: {
     startDate: string;
