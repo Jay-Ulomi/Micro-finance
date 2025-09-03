@@ -5,7 +5,7 @@
       class="fixed inset-y-0 left-0 z-50 shadow-xl transform transition-transform duration-300 ease-in-out border-r border-primary-200"
       :class="[
         !sidebarOpen ? '-translate-x-full' : '',
-        sidebarCollapsed ? 'w-20' : 'w-72',
+        sidebarCollapsed ? 'w-20' : 'w-64',
         'bg-gradient-to-br from-neutral-900 via-neutral-800 to-primary-900 text-white',
       ]"
     >
@@ -145,7 +145,7 @@
     </aside>
 
     <!-- Main content -->
-    <div :class="sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-72'">
+    <div :class="sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'">
       <!-- Header -->
       <header class="sticky top-0 z-30 bg-white shadow-sm border-b border-gray-200">
         <div class="flex items-center justify-between h-14 px-6">
