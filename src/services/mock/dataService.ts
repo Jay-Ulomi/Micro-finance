@@ -80,6 +80,32 @@ export interface Loan {
   notes?: string;
   createdAt: string;
   updatedAt: string;
+  // Additional fields for details page
+  borrower: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    mobile: string;
+    uniqueNumber?: string;
+    address?: string;
+    city?: string;
+    province?: string;
+    zipcode?: string;
+    country?: string;
+    dateOfBirth?: string;
+    landline?: string;
+  };
+  loanNumber: string;
+  principalAmount: number;
+  totalFees: number;
+  totalPenalties: number;
+  totalPaid: number;
+  loanReleaseDate?: string;
+  disbursedBy?: string;
+  interestMethod?: string;
+  numberOfRepayments?: number;
+  interestStartDate?: string;
 }
 
 export interface Repayment {
@@ -170,9 +196,124 @@ class DataService {
 
   private loadData() {
     this.borrowers = borrowersData.borrowers as Borrower[];
-    this.loans = loansData.loans as Loan[];
+    this.loans = this.transformLoansData(loansData.loans);
     this.repayments = repaymentsData.repayments as Repayment[];
     this.loanOfficers = loanOfficersData.loanOfficers as LoanOfficer[];
+  }
+
+  private transformLoansData(loansData: any[]): Loan[] {
+    return loansData.map((loan) => ({
+      id: loan.id.toString(),
+      borrowerId: loan.borrowerId.toString(),
+      borrowerName: `${loan.borrower.firstName} ${loan.borrower.lastName}`,
+      loanType: this.mapLoanType(loan.loanProduct),
+      loanCategory: "unsecured" as const,
+      applicationDate: loan.createdAt,
+      requestedAmount: loan.principalAmount,
+      approvedAmount: loan.principalAmount,
+      interestRate: loan.interestRate,
+      loanTerm: loan.loanDuration,
+      repaymentFrequency: this.mapRepaymentFrequency(loan.repaymentCycle),
+      status: this.mapLoanStatus(loan.status),
+      purpose: loan.description || "Business loan",
+      collateral: undefined,
+      guarantors: loan.guarantor
+        ? [
+            {
+              id: loan.guarantor.id.toString(),
+              name: `${loan.guarantor.firstName} ${loan.guarantor.lastName}`,
+              relationship: "Guarantor",
+              contact: loan.guarantor.email,
+            },
+          ]
+        : undefined,
+      loanOfficer: loan.loanOfficer,
+      applicationDocuments: [],
+      disbursementDate: loan.loanReleaseDate,
+      firstPaymentDate: loan.firstRepaymentDate,
+      maturityDate: loan.maturityDate,
+      totalInterest: loan.totalInterest || 0,
+      totalAmount: loan.principalAmount + (loan.totalInterest || 0),
+      outstandingBalance: loan.outstandingBalance || 0,
+      nextPaymentDate: loan.nextPaymentDate,
+      nextPaymentAmount: loan.nextPaymentAmount,
+      paymentHistory: [],
+      notes: loan.description,
+      createdAt: loan.createdAt,
+      updatedAt: loan.updatedAt || loan.createdAt,
+      // Additional fields for the details page
+      borrower: loan.borrower,
+      loanNumber: loan.loanNumber,
+      principalAmount: loan.principalAmount,
+      totalFees: loan.totalFees || 0,
+      totalPenalties: loan.totalPenalties || 0,
+      totalPaid: loan.totalPaid || 0,
+      loanReleaseDate: loan.loanReleaseDate,
+      disbursedBy: loan.disbursedBy || "Cash",
+      interestMethod: loan.interestMethod || "Interest-Only",
+      numberOfRepayments: loan.numberOfRepayments || 1,
+      interestStartDate: loan.interestStartDate || loan.createdAt,
+    }));
+  }
+
+  private mapLoanType(
+    loanProduct: string,
+  ): "personal" | "business" | "agricultural" | "microfinance" | "emergency" {
+    const mapping: {
+      [key: string]: "personal" | "business" | "agricultural" | "microfinance" | "emergency";
+    } = {
+      "business-loan": "business",
+      "personal-loan": "personal",
+      "agricultural-loan": "agricultural",
+      "micro-loan": "microfinance",
+    };
+    return mapping[loanProduct] || "business";
+  }
+
+  private mapRepaymentFrequency(
+    repaymentCycle: string,
+  ): "weekly" | "bi-weekly" | "monthly" | "quarterly" {
+    const mapping: { [key: string]: "weekly" | "bi-weekly" | "monthly" | "quarterly" } = {
+      weekly: "weekly",
+      monthly: "monthly",
+      quarterly: "quarterly",
+    };
+    return mapping[repaymentCycle] || "monthly";
+  }
+
+  private mapLoanStatus(
+    status: string,
+  ):
+    | "draft"
+    | "submitted"
+    | "under_review"
+    | "approved"
+    | "rejected"
+    | "disbursed"
+    | "active"
+    | "completed"
+    | "defaulted"
+    | "written_off" {
+    const mapping: {
+      [key: string]:
+        | "draft"
+        | "submitted"
+        | "under_review"
+        | "approved"
+        | "rejected"
+        | "disbursed"
+        | "active"
+        | "completed"
+        | "defaulted"
+        | "written_off";
+    } = {
+      pending: "under_review",
+      approved: "approved",
+      active: "active",
+      overdue: "defaulted",
+      closed: "completed",
+    };
+    return mapping[status] || "draft";
   }
 
   // Borrowers
@@ -342,7 +483,7 @@ class DataService {
   }
 
   getLoan(id: string): Loan | undefined {
-    return this.loans.find((loan) => loan.id === id);
+    return this.loans.find((loan) => loan.id.toString() === id);
   }
 
   getLoanStatistics(): LoanStatistics {

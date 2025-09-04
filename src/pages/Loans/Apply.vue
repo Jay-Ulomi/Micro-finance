@@ -599,6 +599,266 @@
         </div>
       </div>
 
+      <!-- Extend Loan After Maturity -->
+      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div class="mb-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900">
+                Extend Loan After Maturity Until Fully Paid
+              </h3>
+              <p class="mt-1 text-sm text-gray-500">
+                Automatically extend loan after maturity date if not fully paid
+              </p>
+            </div>
+            <button
+              type="button"
+              @click="showExtendLoan = !showExtendLoan"
+              class="text-sm text-blue-600 hover:text-blue-700"
+            >
+              {{ showExtendLoan ? "Hide" : "Show" }}
+            </button>
+          </div>
+        </div>
+        <div v-if="showExtendLoan" class="space-y-6">
+          <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+            <p class="text-sm text-yellow-800">
+              If you select Yes below, the system will automatically add interest after the maturity
+              date if the loan is not fully paid.
+            </p>
+            <p class="text-sm text-yellow-800 mt-2">
+              Please note that if you have setup automated penalties, the After Maturity Date
+              Penalty will not be applicable since the loan will never expire. Only the Late
+              Repayment Penalty will be applied. If you would like to apply the After Maturity Date
+              Penalty, then please set Keep the loan status as Past Maturity even after loan is
+              extended as Yes.
+            </p>
+            <p class="text-sm text-yellow-800 mt-2">
+              Also, you will not be able to add any payments that are used to adjust the schedule or
+              with manual composition.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Extend Loan After Maturity</label
+              >
+              <div class="flex space-x-4">
+                <label class="flex items-center">
+                  <input
+                    v-model="loanForm.extendLoanAfterMaturity"
+                    type="radio"
+                    value="no"
+                    class="form-radio"
+                  />
+                  <span class="ml-2 text-sm">No</span>
+                </label>
+                <label class="flex items-center">
+                  <input
+                    v-model="loanForm.extendLoanAfterMaturity"
+                    type="radio"
+                    value="yes"
+                    class="form-radio"
+                  />
+                  <span class="ml-2 text-sm">Yes</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div v-if="loanForm.extendLoanAfterMaturity === 'yes'" class="space-y-6">
+            <!-- Interest Type After Maturity -->
+            <div>
+              <h4 class="font-medium text-gray-900 mb-4">Interest Type</h4>
+              <div class="space-y-2">
+                <label class="flex items-center">
+                  <input
+                    v-model="loanForm.interestTypeAfterMaturity"
+                    type="radio"
+                    value="percentage"
+                    class="form-radio"
+                  />
+                  <span class="ml-2 text-sm">I want Interest to be percentage % based</span>
+                </label>
+                <label class="flex items-center">
+                  <input
+                    v-model="loanForm.interestTypeAfterMaturity"
+                    type="radio"
+                    value="fixed-amount"
+                    class="form-radio"
+                  />
+                  <span class="ml-2 text-sm">I want Interest to be a fixed amount</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Calculate Interest On -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Calculate Interest on</label
+              >
+              <select v-model="loanForm.calculateInterestOn" class="form-input">
+                <option value="">Select Option</option>
+                <option value="outstanding-principal">Outstanding Principal</option>
+                <option value="original-principal">Original Principal</option>
+                <option value="outstanding-balance">Outstanding Balance</option>
+              </select>
+            </div>
+
+            <!-- Interest Start Date After Maturity -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1"
+                >Interest Start Date After Maturity</label
+              >
+              <input
+                v-model="loanForm.interestStartDateAfterMaturity"
+                type="date"
+                class="form-input"
+              />
+            </div>
+
+            <!-- Interest Rate After Maturity -->
+            <div
+              v-if="loanForm.interestTypeAfterMaturity === 'percentage'"
+              class="grid grid-cols-1 lg:grid-cols-2 gap-6"
+            >
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Loan Interest Rate After Maturity %</label
+                >
+                <div class="flex space-x-2">
+                  <input
+                    v-model.number="loanForm.interestRateAfterMaturity"
+                    type="number"
+                    step="0.01"
+                    class="form-input flex-1"
+                    placeholder="Numbers or decimal only"
+                  />
+                  <span class="flex items-center text-sm text-gray-500">%</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Recurring Period After Maturity</label
+                >
+                <select v-model="loanForm.recurringPeriodAfterMaturity" class="form-input">
+                  <option value="">Select Period</option>
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                  <option value="quarterly">Quarterly</option>
+                  <option value="yearly">Yearly</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Optional Settings -->
+            <div class="space-y-4">
+              <h4 class="font-medium text-gray-900">OPTIONAL:</h4>
+
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Number of Repayments After Maturity</label
+                  >
+                  <input
+                    v-model.number="loanForm.numberOfRepaymentsAfterMaturity"
+                    type="number"
+                    class="form-input"
+                    placeholder="Leave empty or enter 0 for unlimited"
+                  />
+                  <p class="text-xs text-gray-500 mt-1">
+                    Leave the above empty or enter 0 for unlimited number of repayments
+                  </p>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Include Fees After Maturity</label
+                  >
+                  <div class="flex space-x-4">
+                    <label class="flex items-center">
+                      <input
+                        v-model="loanForm.includeFeesAfterMaturity"
+                        type="radio"
+                        value="no"
+                        class="form-radio"
+                      />
+                      <span class="ml-2 text-sm">No</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input
+                        v-model="loanForm.includeFeesAfterMaturity"
+                        type="radio"
+                        value="yes"
+                        class="form-radio"
+                      />
+                      <span class="ml-2 text-sm">Yes</span>
+                    </label>
+                  </div>
+                  <p class="text-xs text-gray-500 mt-1">
+                    Only Loan Fees that are selected as Charge Same Fee on All Repayments (fixed) or
+                    Charge Fee Each Repayment on the Due ... Amount will be added.
+                  </p>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Keep the loan status as Past Maturity even after loan is extended</label
+                  >
+                  <div class="flex space-x-4">
+                    <label class="flex items-center">
+                      <input
+                        v-model="loanForm.keepLoanStatusPastMaturity"
+                        type="radio"
+                        value="no"
+                        class="form-radio"
+                      />
+                      <span class="ml-2 text-sm">No</span>
+                    </label>
+                    <label class="flex items-center">
+                      <input
+                        v-model="loanForm.keepLoanStatusPastMaturity"
+                        type="radio"
+                        value="yes"
+                        class="form-radio"
+                      />
+                      <span class="ml-2 text-sm">Yes</span>
+                    </label>
+                  </div>
+                  <p class="text-xs text-gray-500 mt-1">
+                    If you select Yes, the system will keep the loan status as Past Maturity even
+                    after loan has been extended. If you select No, the loan will never be marked as
+                    Past Maturity since it is constantly being extended once maturity date is
+                    reached.
+                  </p>
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Apply to the following date:</label
+                  >
+                  <input
+                    v-model="loanForm.applyToDate"
+                    type="date"
+                    class="form-input"
+                    placeholder="dd/mm/yyyy"
+                  />
+                  <p class="text-xs text-gray-500 mt-1">
+                    This is an optional field. Leave this empty if you want the extend loan after
+                    maturity to be applied indefinitely.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Loan Status & Other Settings -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <div class="mb-6">
@@ -805,6 +1065,16 @@ interface LoanForm {
   automatedPaymentStartTime: string;
   automatedPaymentEndTime: string;
   automatedPaymentAccount: string;
+  extendLoanAfterMaturity: string;
+  interestTypeAfterMaturity: string;
+  calculateInterestOn: string;
+  interestStartDateAfterMaturity: string;
+  interestRateAfterMaturity: number;
+  recurringPeriodAfterMaturity: string;
+  numberOfRepaymentsAfterMaturity: number;
+  includeFeesAfterMaturity: string;
+  keepLoanStatusPastMaturity: string;
+  applyToDate: string;
   loanStatus: string;
   guarantorId: string;
   loanTitle: string;
@@ -847,6 +1117,16 @@ const loanForm = ref<LoanForm>({
   automatedPaymentStartTime: "",
   automatedPaymentEndTime: "",
   automatedPaymentAccount: "",
+  extendLoanAfterMaturity: "no",
+  interestTypeAfterMaturity: "percentage",
+  calculateInterestOn: "",
+  interestStartDateAfterMaturity: "",
+  interestRateAfterMaturity: 0,
+  recurringPeriodAfterMaturity: "",
+  numberOfRepaymentsAfterMaturity: 0,
+  includeFeesAfterMaturity: "no",
+  keepLoanStatusPastMaturity: "no",
+  applyToDate: "",
   loanStatus: "",
   guarantorId: "",
   loanTitle: "",
@@ -859,6 +1139,7 @@ const borrowers = ref<any[]>([]);
 const loanFees = ref<LoanFee[]>([]);
 const showAdvanceSettings = ref(false);
 const showAutomatedPayments = ref(false);
+const showExtendLoan = ref(false);
 const isSubmitting = ref(false);
 const successMessage = ref("");
 const errorMessage = ref("");
@@ -958,6 +1239,16 @@ const submitLoan = async () => {
       automatedPaymentStartTime: "",
       automatedPaymentEndTime: "",
       automatedPaymentAccount: "",
+      extendLoanAfterMaturity: "no",
+      interestTypeAfterMaturity: "percentage",
+      calculateInterestOn: "",
+      interestStartDateAfterMaturity: "",
+      interestRateAfterMaturity: 0,
+      recurringPeriodAfterMaturity: "",
+      numberOfRepaymentsAfterMaturity: 0,
+      includeFeesAfterMaturity: "no",
+      keepLoanStatusPastMaturity: "no",
+      applyToDate: "",
       loanStatus: "",
       guarantorId: "",
       loanTitle: "",

@@ -121,6 +121,78 @@ const router = createRouter({
           component: () => import("@/pages/Loans/Details.vue"),
           meta: { title: "Loan Details" },
         },
+        {
+          path: "loans/due",
+          name: "loans-due",
+          component: () => import("@/pages/Loans/Due.vue"),
+          meta: { title: "Due Loans" },
+        },
+        {
+          path: "loans/missed",
+          name: "loans-missed",
+          component: () => import("@/pages/Loans/Missed.vue"),
+          meta: { title: "Missed Repayments" },
+        },
+        {
+          path: "loans/arrears",
+          name: "loans-arrears",
+          component: () => import("@/pages/Loans/Arrears.vue"),
+          meta: { title: "Loans in Arrears" },
+        },
+        {
+          path: "loans/no-repayments",
+          name: "loans-no-repayments",
+          component: () => import("@/pages/Loans/NoRepayments.vue"),
+          meta: { title: "No Repayments" },
+        },
+        {
+          path: "loans/past-maturity",
+          name: "loans-past-maturity",
+          component: () => import("@/pages/Loans/PastMaturity.vue"),
+          meta: { title: "Past Maturity Date" },
+        },
+        {
+          path: "loans/principal-outstanding",
+          name: "loans-principal-outstanding",
+          component: () => import("@/pages/Loans/PrincipalOutstanding.vue"),
+          meta: { title: "Principal Outstanding" },
+        },
+        {
+          path: "loans/1-month-late",
+          name: "loans-1-month-late",
+          component: () => import("@/pages/Loans/OneMonthLate.vue"),
+          meta: { title: "1 Month Late Loans" },
+        },
+        {
+          path: "loans/3-months-late",
+          name: "loans-3-months-late",
+          component: () => import("@/pages/Loans/ThreeMonthsLate.vue"),
+          meta: { title: "3 Months Late Loans" },
+        },
+        {
+          path: "loans/calculator",
+          name: "loans-calculator",
+          component: () => import("@/pages/Loans/Calculator.vue"),
+          meta: { title: "Loan Calculator" },
+        },
+        {
+          path: "loans/guarantors",
+          name: "loans-guarantors",
+          component: () => import("@/pages/Loans/Guarantors.vue"),
+          meta: { title: "Guarantors" },
+        },
+        {
+          path: "loans/comments",
+          name: "loans-comments",
+          component: () => import("@/pages/Loans/Comments.vue"),
+          meta: { title: "Loan Comments" },
+        },
+        {
+          path: "loans/approve",
+          name: "loans-approve",
+          component: () => import("@/pages/Loans/Approve.vue"),
+          meta: { title: "Approve Loans" },
+        },
         // Repayments
         {
           path: "repayments",

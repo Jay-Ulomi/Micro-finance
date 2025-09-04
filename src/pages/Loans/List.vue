@@ -4,186 +4,225 @@
     <div class="flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-bold text-gray-900">Loans</h1>
-        <p class="mt-1 text-sm text-gray-500">
-          Manage loan applications and track loan status
-        </p>
+        <p class="mt-1 text-sm text-gray-500">Manage loan applications and track loan status</p>
       </div>
-      <router-link to="/loans/apply" class="btn-primary">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-        </svg>
-        Apply for Loan
-      </router-link>
+      <div class="flex items-center space-x-3">
+        <button @click="refreshLoans" class="btn-secondary">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+          Refresh
+        </button>
+        <router-link to="/loans/apply" class="btn-primary">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            />
+          </svg>
+          Apply for Loan
+        </router-link>
+      </div>
     </div>
 
     <!-- Filters and search -->
-    <div class="card">
-      <div class="card-body">
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
-          <div>
-            <label for="search" class="form-label">Search</label>
-            <input
-              id="search"
-              v-model="loansStore.searchQuery"
-              type="text"
-              class="form-input"
-              placeholder="Search by loan number, customer name..."
-              @input="handleSearch"
-            />
-          </div>
-          <div>
-            <label for="status" class="form-label">Status</label>
-            <select
-              id="status"
-              v-model="loansStore.statusFilter"
-              class="form-input"
-              @change="handleFilter"
-            >
-              <option value="">All Statuses</option>
-              <option value="pending">Pending</option>
-              <option value="under_review">Under Review</option>
-              <option value="approved">Approved</option>
-              <option value="disbursed">Disbursed</option>
-              <option value="active">Active</option>
-              <option value="overdue">Overdue</option>
-              <option value="closed">Closed</option>
-            </select>
-          </div>
-          <div>
-            <label for="loanType" class="form-label">Loan Type</label>
-            <select
-              id="loanType"
-              v-model="loanTypeFilter"
-              class="form-input"
-              @change="handleFilter"
-            >
-              <option value="">All Types</option>
-              <option value="personal">Personal</option>
-              <option value="business">Business</option>
-              <option value="mortgage">Mortgage</option>
-              <option value="vehicle">Vehicle</option>
-              <option value="education">Education</option>
-            </select>
-          </div>
-          <div class="flex items-end">
-            <button @click="resetFilters" class="btn-secondary w-full">
-              Reset Filters
-            </button>
-          </div>
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-4">
+        <div>
+          <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+          <input
+            id="search"
+            v-model="searchQuery"
+            type="text"
+            class="form-input"
+            placeholder="Search by loan number, borrower name..."
+            @input="handleSearch"
+          />
+        </div>
+        <div>
+          <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+          <select id="status" v-model="statusFilter" class="form-input" @change="handleFilter">
+            <option value="">All Statuses</option>
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="active">Active</option>
+            <option value="overdue">Overdue</option>
+            <option value="closed">Closed</option>
+          </select>
+        </div>
+        <div>
+          <label for="loanType" class="block text-sm font-medium text-gray-700 mb-1"
+            >Loan Type</label
+          >
+          <select id="loanType" v-model="loanTypeFilter" class="form-input" @change="handleFilter">
+            <option value="">All Types</option>
+            <option value="business-loan">Business Loan</option>
+            <option value="personal-loan">Personal Loan</option>
+            <option value="agricultural-loan">Agricultural Loan</option>
+            <option value="micro-loan">Micro Loan</option>
+          </select>
+        </div>
+        <div class="flex items-end">
+          <button @click="resetFilters" class="btn-secondary w-full">Reset Filters</button>
         </div>
       </div>
     </div>
 
     <!-- Loans table -->
-    <div class="card">
-      <div class="card-body">
-        <div v-if="loansStore.isLoading" class="flex justify-center py-8">
-          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+      <div class="p-6">
+        <div v-if="isLoading" class="flex justify-center py-8">
+          <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
         </div>
 
-        <div v-else-if="loansStore.filteredLoans.length === 0" class="text-center py-8">
-          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+        <div v-else-if="loans.length === 0" class="text-center py-8">
+          <svg
+            class="mx-auto h-12 w-12 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+            />
           </svg>
           <h3 class="mt-2 text-sm font-medium text-gray-900">No loans found</h3>
-          <p class="mt-1 text-sm text-gray-500">
-            Get started by applying for a new loan.
-          </p>
+          <p class="mt-1 text-sm text-gray-500">Get started by applying for a new loan.</p>
         </div>
 
         <div v-else class="overflow-x-auto">
-          <table class="table">
-            <thead>
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
               <tr>
-                <th>Loan Number</th>
-                <th>Customer</th>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Created</th>
-                <th>Actions</th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  View
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Released
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Name
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Loan#
+                </th>
+                <th
+                  class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Principal
+                </th>
+                <th
+                  class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Interest Rate
+                </th>
+                <th
+                  class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Total Due
+                </th>
+                <th
+                  class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Paid
+                </th>
+                <th
+                  class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Balance
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Last Payment
+                </th>
+                <th
+                  class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Status
+                </th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-gray-200">
-              <tr v-for="loan in loansStore.filteredLoans" :key="loan.id">
-                <td>
-                  <span class="font-mono text-sm text-gray-900">{{ loan.loanNumber }}</span>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr v-for="loan in loans" :key="loan.id" class="hover:bg-gray-50">
+                <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
+                  <router-link :to="`/loans/${loan.id}`" class="text-blue-600 hover:text-blue-900">
+                    View
+                  </router-link>
                 </td>
-                <td>
+                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {{ loan.loanReleaseDate ? formatDate(loan.loanReleaseDate) : "-" }}
+                </td>
+                <td class="px-4 py-4 whitespace-nowrap">
                   <div class="flex items-center">
-                    <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                      <span class="text-primary-600 font-medium text-sm">
-                        {{ loan.customer.firstName.charAt(0) }}{{ loan.customer.lastName.charAt(0) }}
+                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                      <span class="text-blue-600 font-medium text-sm">
+                        {{ loan.borrower.firstName.charAt(0)
+                        }}{{ loan.borrower.lastName.charAt(0) }}
                       </span>
                     </div>
                     <div class="ml-3">
                       <div class="text-sm font-medium text-gray-900">
-                        {{ loan.customer.firstName }} {{ loan.customer.lastName }}
+                        {{ loan.borrower.firstName }} {{ loan.borrower.lastName }}
                       </div>
-                      <div class="text-sm text-gray-500">{{ loan.customer.email }}</div>
+                      <div class="text-sm text-gray-500">{{ loan.borrower.email }}</div>
                     </div>
                   </div>
                 </td>
-                <td>
-                  <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                    {{ loan.loanType }}
-                  </span>
+                <td class="px-4 py-4 whitespace-nowrap">
+                  <span class="font-mono text-sm text-gray-900">{{ loan.loanNumber }}</span>
                 </td>
-                <td>
-                  <div class="text-sm font-medium text-gray-900">{{ formatCurrency(loan.amount) }}</div>
-                  <div class="text-sm text-gray-500">{{ loan.term }} months</div>
+                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
+                  {{ formatCurrency(loan.principalAmount) }}
                 </td>
-                <td>
+                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
+                  {{ loan.interestRate }}%
+                </td>
+                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
+                  {{ formatCurrency(calculateTotalDue(loan)) }}
+                </td>
+                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
+                  {{ formatCurrency(loan.totalPaid || 0) }}
+                </td>
+                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900 text-right">
+                  {{ formatCurrency(loan.outstandingBalance || 0) }}
+                </td>
+                <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {{ loan.lastPaymentDate ? formatDate(loan.lastPaymentDate) : "-" }}
+                </td>
+                <td class="px-4 py-4 whitespace-nowrap">
                   <span
                     :class="[
                       'inline-flex px-2 py-1 text-xs font-semibold rounded-full',
                       {
                         'bg-yellow-100 text-yellow-800': loan.status === 'pending',
-                        'bg-blue-100 text-blue-800': loan.status === 'under_review',
                         'bg-green-100 text-green-800': loan.status === 'approved',
-                        'bg-purple-100 text-purple-800': loan.status === 'disbursed',
-                        'bg-indigo-100 text-indigo-800': loan.status === 'active',
+                        'bg-blue-100 text-blue-800': loan.status === 'active',
                         'bg-red-100 text-red-800': loan.status === 'overdue',
-                        'bg-gray-100 text-gray-800': loan.status === 'closed'
-                      }
+                        'bg-gray-100 text-gray-800': loan.status === 'closed',
+                      },
                     ]"
                   >
                     {{ formatStatus(loan.status) }}
                   </span>
-                </td>
-                <td>
-                  <div class="text-sm text-gray-900">{{ formatDate(loan.createdAt) }}</div>
-                </td>
-                <td>
-                  <div class="flex space-x-2">
-                    <router-link
-                      :to="`/loans/${loan.id}`"
-                      class="text-primary-600 hover:text-primary-900 text-sm font-medium"
-                    >
-                      View
-                    </router-link>
-                    <button
-                      v-if="loan.status === 'pending'"
-                      @click="approveLoan(loan)"
-                      class="text-green-600 hover:text-green-900 text-sm font-medium"
-                    >
-                      Approve
-                    </button>
-                    <button
-                      v-if="loan.status === 'pending'"
-                      @click="rejectLoan(loan)"
-                      class="text-red-600 hover:text-red-900 text-sm font-medium"
-                    >
-                      Reject
-                    </button>
-                    <button
-                      v-if="loan.status === 'approved'"
-                      @click="disburseLoan(loan)"
-                      class="text-purple-600 hover:text-purple-900 text-sm font-medium"
-                    >
-                      Disburse
-                    </button>
-                  </div>
                 </td>
               </tr>
             </tbody>
@@ -191,23 +230,22 @@
         </div>
 
         <!-- Pagination -->
-        <div v-if="loansStore.total > loansStore.limit" class="mt-6 flex items-center justify-between">
+        <div v-if="totalPages > 1" class="mt-6 flex items-center justify-between">
           <div class="text-sm text-gray-700">
-            Showing {{ (loansStore.currentPage - 1) * loansStore.limit + 1 }} to
-            {{ Math.min(loansStore.currentPage * loansStore.limit, loansStore.total) }} of
-            {{ loansStore.total }} results
+            Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to
+            {{ Math.min(currentPage * itemsPerPage, totalLoans) }} of {{ totalLoans }} results
           </div>
           <div class="flex space-x-2">
             <button
-              @click="changePage(loansStore.currentPage - 1)"
-              :disabled="loansStore.currentPage === 1"
+              @click="changePage(currentPage - 1)"
+              :disabled="currentPage === 1"
               class="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
             </button>
             <button
-              @click="changePage(loansStore.currentPage + 1)"
-              :disabled="loansStore.currentPage * loansStore.limit >= loansStore.total"
+              @click="changePage(currentPage + 1)"
+              :disabled="currentPage >= totalPages"
               class="btn-secondary disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next
@@ -220,73 +258,184 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, inject } from 'vue';
-import { useLoansStore } from '@/store/loans';
-import { formatCurrency } from '@/utils/formatCurrency';
-import { formatDate } from '@/utils/formatDate';
+import { ref, computed, onMounted } from "vue";
+import { service, type Loan } from "@/services";
+import { formatCurrency } from "@/utils/formatCurrency";
+import { formatDate } from "@/utils/formatDate";
 
-const loansStore = useLoansStore();
-const loanTypeFilter = ref('');
+// Reactive data
+const loans = ref<Loan[]>([]);
+const isLoading = ref(false);
+const searchQuery = ref("");
+const statusFilter = ref("");
+const loanTypeFilter = ref("");
+const currentPage = ref(1);
+const itemsPerPage = ref(10);
+const totalLoans = ref(0);
 
-const showSuccess = inject('showSuccess') as (message: string) => void;
-const showError = inject('showError') as (message: string) => void;
+// Computed properties
+// No need for client-side filtering since service handles it
 
-onMounted(async () => {
-  await loansStore.getLoans();
+// totalLoans is now managed by the service response
+
+const totalPages = computed(() => {
+  return Math.ceil(totalLoans.value / itemsPerPage.value);
 });
 
-const handleSearch = () => {
-  loansStore.getLoans();
+// Methods
+const loadLoans = async () => {
+  try {
+    isLoading.value = true;
+
+    const response = await service.getLoansAsync({
+      page: currentPage.value,
+      limit: itemsPerPage.value,
+      search: searchQuery.value,
+      status: statusFilter.value,
+      loanType: loanTypeFilter.value,
+    });
+
+    loans.value = response.loans;
+    totalLoans.value = response.total;
+    isLoading.value = false;
+  } catch (error) {
+    console.error("Error loading loans:", error);
+    isLoading.value = false;
+  }
 };
 
-const handleFilter = () => {
-  loansStore.getLoans();
+const refreshLoans = async () => {
+  await loadLoans();
 };
 
-const resetFilters = () => {
-  loanTypeFilter.value = '';
-  loansStore.resetFilters();
-  loansStore.getLoans();
+const handleSearch = async () => {
+  currentPage.value = 1;
+  await loadLoans();
 };
 
-const changePage = (page: number) => {
-  loansStore.getLoans({ page });
+const handleFilter = async () => {
+  currentPage.value = 1;
+  await loadLoans();
+};
+
+const resetFilters = async () => {
+  searchQuery.value = "";
+  statusFilter.value = "";
+  loanTypeFilter.value = "";
+  currentPage.value = 1;
+  await loadLoans();
+};
+
+const changePage = async (page: number) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page;
+    await loadLoans();
+  }
 };
 
 const formatStatus = (status: string) => {
-  return status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+  return status.replace("_", " ").replace(/\b\w/g, (l) => l.toUpperCase());
+};
+
+const formatLoanType = (loanProduct: string) => {
+  const types: { [key: string]: string } = {
+    "business-loan": "Business Loan",
+    "personal-loan": "Personal Loan",
+    "agricultural-loan": "Agricultural Loan",
+    "micro-loan": "Micro Loan",
+  };
+  return types[loanProduct] || loanProduct;
+};
+
+const calculateTotalDue = (loan: any) => {
+  // Calculate total due based on interest method
+  if (loan.interestMethod === "flat-rate") {
+    // Flat rate: Principal + (Principal * Interest Rate * Duration in years)
+    const durationInYears =
+      loan.durationUnit === "months"
+        ? loan.loanDuration / 12
+        : loan.durationUnit === "weeks"
+          ? loan.loanDuration / 52
+          : loan.durationUnit === "days"
+            ? loan.loanDuration / 365
+            : loan.loanDuration;
+    const interest = loan.principalAmount * (loan.interestRate / 100) * durationInYears;
+    return loan.principalAmount + interest;
+  } else {
+    // For reducing balance or other methods, use a simplified calculation
+    // This would typically be calculated based on the loan schedule
+    const durationInYears =
+      loan.durationUnit === "months"
+        ? loan.loanDuration / 12
+        : loan.durationUnit === "weeks"
+          ? loan.loanDuration / 52
+          : loan.durationUnit === "days"
+            ? loan.loanDuration / 365
+            : loan.loanDuration;
+    const interest = loan.principalAmount * (loan.interestRate / 100) * durationInYears;
+    return loan.principalAmount + interest;
+  }
 };
 
 const approveLoan = async (loan: any) => {
   try {
-    await loansStore.approveLoan(loan.id, { notes: 'Approved by loan officer' });
-    showSuccess('Loan approved successfully');
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // Update loan status
+    const index = loans.value.findIndex((l) => l.id === loan.id);
+    if (index !== -1) {
+      loans.value[index].status = "approved";
+      loans.value[index].approvedAt = new Date().toISOString();
+    }
+
+    alert("Loan approved successfully");
   } catch (error) {
-    showError('Failed to approve loan');
+    alert("Failed to approve loan");
   }
 };
 
 const rejectLoan = async (loan: any) => {
-  const reason = prompt('Please provide a reason for rejection:');
+  const reason = prompt("Please provide a reason for rejection:");
   if (reason) {
     try {
-      await loansStore.rejectLoan(loan.id, { reason });
-      showSuccess('Loan rejected successfully');
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Update loan status
+      const index = loans.value.findIndex((l) => l.id === loan.id);
+      if (index !== -1) {
+        loans.value[index].status = "rejected";
+        loans.value[index].rejectionReason = reason;
+      }
+
+      alert("Loan rejected successfully");
     } catch (error) {
-      showError('Failed to reject loan');
+      alert("Failed to reject loan");
     }
   }
 };
 
 const disburseLoan = async (loan: any) => {
   try {
-    await loansStore.disburseLoan(loan.id, { 
-      disbursementDate: new Date().toISOString().split('T')[0],
-      notes: 'Loan disbursed successfully'
-    });
-    showSuccess('Loan disbursed successfully');
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // Update loan status
+    const index = loans.value.findIndex((l) => l.id === loan.id);
+    if (index !== -1) {
+      loans.value[index].status = "active";
+      loans.value[index].disbursedAt = new Date().toISOString();
+    }
+
+    alert("Loan disbursed successfully");
   } catch (error) {
-    showError('Failed to disburse loan');
+    alert("Failed to disburse loan");
   }
 };
+
+// Lifecycle
+onMounted(async () => {
+  await loadLoans();
+});
 </script>
