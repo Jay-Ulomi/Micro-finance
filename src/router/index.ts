@@ -470,12 +470,7 @@ const router = createRouter({
           component: () => import("@/pages/AssetManagement/Create.vue"),
           meta: { title: "Add Asset" },
         },
-        {
-          path: "asset-management/depreciation",
-          name: "asset-management-depreciation",
-          component: () => import("@/pages/AssetManagement/Depreciation.vue"),
-          meta: { title: "Asset Depreciation" },
-        },
+      
 
         // Reports
         {
