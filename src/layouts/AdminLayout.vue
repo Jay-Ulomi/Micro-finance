@@ -358,7 +358,7 @@ const navigationItems = [
       { name: "loans-calculator", label: "Loan Calculator", to: "/loans/calculator" },
       { name: "loans-guarantors", label: "Guarantors", to: "/loans/guarantors" },
       { name: "loans-comments", label: "Loan Comments", to: "/loans/comments" },
-      { name: "loans-approval", label: "Approve Loans", to: "/loans/approval" },
+      { name: "loans-approve", label: "Approve Loans", to: "/loans/approve" },
     ],
   },
   {
@@ -369,10 +369,9 @@ const navigationItems = [
     hasDropdown: true,
     dropdownItems: [
       { name: "repayments-list", label: "Repayment List", to: "/repayments" },
-      { name: "repayments-schedule", label: "Payment Schedule", to: "/repayments/schedule" },
-      { name: "repayments-collection", label: "Collection", to: "/repayments/collection" },
-      { name: "repayments-overdue", label: "Overdue Payments", to: "/repayments/overdue" },
-      { name: "repayments-receipts", label: "Receipts", to: "/repayments/receipts" },
+      { name: "repayments-view", label: "View Repayments", to: "/repayments/view" },
+      { name: "repayments-bulk", label: "Add Bulk Repayments", to: "/repayments/bulk" },
+      { name: "repayments-approve", label: "Approve Repayments", to: "/repayments/approve" },
     ],
   },
   {
@@ -425,9 +424,21 @@ const navigationItems = [
     icon: BuildingLibraryIcon,
     hasDropdown: true,
     dropdownItems: [
-      { name: "savings-accounts", label: "Savings Accounts", to: "/savings" },
-      { name: "savings-create", label: "Open Account", to: "/savings/create" },
+
+      { name: "savings-accounts", label: "View Savings Accounts", to: "/savings" },
+      { name: "savings-create", label: "Add Savings Account", to: "/savings/create" },
+      { name: "savings-charts", label: "Savings Charts", to: "/savings/charts" },
+      { name: "savings-report", label: "Savings Report", to: "/savings/report" },
+      {
+        name: "savings-products-report",
+        label: "Savings Products Report",
+        to: "/savings/products-report",
+      },
+      { name: "savings-fee-report", label: "Savings Fee Report", to: "/savings/fee-report" },
+      { name: "savings-cash-safe", label: "Cash Safe Management", to: "/savings/cash-safe" },
       { name: "savings-products", label: "Products", to: "/savings/products" },
+      { name: "savings-products-create", label: "Add Product", to: "/savings/products/create" },
+      { name: "savings-products-create-susu", label: "Add SUSU Product", to: "/savings/products/create-susu" },
       { name: "savings-interest", label: "Interest Rates", to: "/savings/interest" },
     ],
   },
@@ -439,6 +450,26 @@ const navigationItems = [
     hasDropdown: true,
     dropdownItems: [
       { name: "savings-transactions-list", label: "Transactions", to: "/savings-transactions" },
+      {
+        name: "savings-transactions-bulk-add",
+        label: "Add Bulk Transactions",
+        to: "/savings-transactions/bulk-add",
+      },
+      {
+        name: "savings-transactions-upload-csv",
+        label: "Upload from CSV",
+        to: "/savings-transactions/upload-csv",
+      },
+      {
+        name: "savings-transactions-staff-report",
+        label: "Staff Transactions Report",
+        to: "/savings-transactions/staff-report",
+      },
+      {
+        name: "savings-transactions-approve",
+        label: "Approve Transactions",
+        to: "/savings-transactions/approve",
+      },
       {
         name: "savings-transactions-deposits",
         label: "Deposits",
@@ -476,8 +507,13 @@ const navigationItems = [
     icon: BuildingLibraryIcon,
     hasDropdown: true,
     dropdownItems: [
-      { name: "investor-accounts-list", label: "Accounts", to: "/investor-accounts" },
+      { name: "investor-accounts-list", label: "View All Accounts", to: "/investor-accounts" },
       { name: "investor-accounts-create", label: "Open Account", to: "/investor-accounts/create" },
+      { name: "investor-accounts-create-product", label: "Create Product", to: "/investor-accounts/create-product" },
+      { name: "investor-products", label: "Products", to: "/investor-accounts/products" },
+      { name: "loan-investments", label: "Loan Investments", to: "/investor-accounts/loan-investments" },
+      { name: "investor-transactions", label: "Transactions", to: "/investor-accounts/transactions" },
+      { name: "approve-investments", label: "Approve Investments", to: "/investor-accounts/approve-investments" },
       {
         name: "investor-accounts-investments",
         label: "Investments",
@@ -509,7 +545,7 @@ const navigationItems = [
       { name: "payroll-list", label: "Payroll List", to: "/payroll" },
       { name: "payroll-create", label: "Process Payroll", to: "/payroll/create" },
       { name: "payroll-employees", label: "Employees", to: "/payroll/employees" },
-      { name: "payroll-reports", label: "Payroll Reports", to: "/payroll/reports" },
+      { name: "payroll-report", label: "Payroll Reports", to: "/payroll/report" },
     ],
   },
   {

@@ -5,9 +5,9 @@
         <h1 class="text-2xl font-bold text-gray-900">Savings Accounts</h1>
         <p class="text-sm text-gray-600">Manage customer savings accounts and products</p>
       </div>
-      <button class="btn btn-primary">
+      <button @click="createAccount" class="btn btn-primary">
         <PlusIcon class="w-4 h-4 mr-2" />
-        Open Account
+        Add Savings Account
       </button>
     </div>
 
@@ -84,6 +84,13 @@
 
 <script setup lang="ts">
 import { PlusIcon } from "@heroicons/vue/24/outline";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const createAccount = () => {
+  router.push("/savings/create");
+};
 
 defineOptions({
   name: "SavingsList",

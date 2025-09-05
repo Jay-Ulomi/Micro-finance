@@ -200,12 +200,36 @@ const router = createRouter({
           component: () => import("@/pages/Repayments/List.vue"),
           meta: { title: "Repayments" },
         },
+        {
+          path: "repayments/view",
+          name: "repayments-view",
+          component: () => import("@/pages/Repayments/View.vue"),
+          meta: { title: "View Repayments" },
+        },
+        {
+          path: "repayments/bulk",
+          name: "repayments-bulk",
+          component: () => import("@/pages/Repayments/Bulk.vue"),
+          meta: { title: "Add Bulk Repayments" },
+        },
+        {
+          path: "repayments/approve",
+          name: "repayments-approve",
+          component: () => import("@/pages/Repayments/Approve.vue"),
+          meta: { title: "Approve Repayments" },
+        },
         // Collateral Register
         {
           path: "collateral",
           name: "collateral",
           component: () => import("@/pages/Collateral/List.vue"),
           meta: { title: "Collateral Register" },
+        },
+        {
+          path: "collateral/create",
+          name: "collateral-create",
+          component: () => import("@/pages/Collateral/Create.vue"),
+          meta: { title: "Add Collateral" },
         },
         // Calendar
         {
@@ -228,12 +252,84 @@ const router = createRouter({
           component: () => import("@/pages/Savings/List.vue"),
           meta: { title: "Savings" },
         },
+        {
+          path: "savings/create",
+          name: "savings-create",
+          component: () => import("@/pages/Savings/AccountCreate.vue"),
+          meta: { title: "Add Savings Account" },
+        },
+        {
+          path: "savings/products",
+          name: "savings-products",
+          component: () => import("@/pages/Savings/ProductList.vue"),
+          meta: { title: "Savings Products" },
+        },
+        {
+          path: "savings/products/create",
+          name: "savings-products-create",
+          component: () => import("@/pages/Savings/ProductCreate.vue"),
+          meta: { title: "Add Savings Product" },
+        },
+        {
+          path: "savings/products/create-susu",
+          name: "savings-products-create-susu",
+          component: () => import("@/pages/Savings/SusuProductCreate.vue"),
+          meta: { title: "Add SUSU Collector Product" },
+        },
+        {
+          path: "savings/cash-safe",
+          name: "savings-cash-safe",
+          component: () => import("@/pages/Savings/CashSafeManagement.vue"),
+          meta: { title: "Cash Safe Management" },
+        },
+        {
+          path: "savings/fee-report",
+          name: "savings-fee-report",
+          component: () => import("@/pages/Savings/FeeReport.vue"),
+          meta: { title: "Savings Fee Report" },
+        },
+        {
+          path: "savings/products-report",
+          name: "savings-products-report",
+          component: () => import("@/pages/Savings/ProductsReport.vue"),
+          meta: { title: "Savings Products Report" },
+        },
+        {
+          path: "savings/report",
+          name: "savings-report",
+          component: () => import("@/pages/Savings/SavingsReport.vue"),
+          meta: { title: "Savings Report" },
+        },
         // Savings Transactions
         {
           path: "savings-transactions",
           name: "savings-transactions",
           component: () => import("@/pages/SavingsTransactions/List.vue"),
           meta: { title: "Savings Transactions" },
+        },
+        {
+          path: "savings-transactions/bulk-add",
+          name: "savings-transactions-bulk-add",
+          component: () => import("@/pages/SavingsTransactions/BulkAdd.vue"),
+          meta: { title: "Add Bulk Transactions" },
+        },
+        {
+          path: "savings-transactions/upload-csv",
+          name: "savings-transactions-upload-csv",
+          component: () => import("@/pages/SavingsTransactions/UploadCSV.vue"),
+          meta: { title: "Upload Transactions from CSV" },
+        },
+        {
+          path: "savings-transactions/staff-report",
+          name: "savings-transactions-staff-report",
+          component: () => import("@/pages/SavingsTransactions/StaffReport.vue"),
+          meta: { title: "Staff Transactions Report" },
+        },
+        {
+          path: "savings-transactions/approve",
+          name: "savings-transactions-approve",
+          component: () => import("@/pages/SavingsTransactions/Approve.vue"),
+          meta: { title: "Approve Transactions" },
         },
         // Investors
         {
@@ -242,12 +338,60 @@ const router = createRouter({
           component: () => import("@/pages/Investors/List.vue"),
           meta: { title: "Investors" },
         },
+        {
+          path: "investors/create",
+          name: "investors-create",
+          component: () => import("@/pages/Investors/Create.vue"),
+          meta: { title: "Add Investor" },
+        },
+        {
+          path: "investors/:id",
+          name: "investors-details",
+          component: () => import("@/pages/Investors/Details.vue"),
+          meta: { title: "Investor Details" },
+        },
         // Investor Accounts
         {
           path: "investor-accounts",
           name: "investor-accounts",
           component: () => import("@/pages/InvestorAccounts/List.vue"),
           meta: { title: "Investor Accounts" },
+        },
+        {
+          path: "investor-accounts/create",
+          name: "investor-accounts-create",
+          component: () => import("@/pages/InvestorAccounts/Create.vue"),
+          meta: { title: "Add Investor Account" },
+        },
+        {
+          path: "investor-accounts/create-product",
+          name: "investor-accounts-create-product",
+          component: () => import("@/pages/InvestorAccounts/CreateProduct.vue"),
+          meta: { title: "Add Investor Product" },
+        },
+        {
+          path: "investor-accounts/loan-investments",
+          name: "loan-investments",
+          component: () => import("@/pages/InvestorAccounts/LoanInvestments.vue"),
+          meta: { title: "Loan Investments" },
+        },
+        {
+          path: "investor-accounts/transactions",
+          name: "investor-transactions",
+          component: () => import("@/pages/InvestorAccounts/Transactions.vue"),
+          meta: { title: "Investor Transactions" },
+        },
+        {
+          path: "investor-accounts/approve-investments",
+          name: "approve-investments",
+          component: () => import("@/pages/InvestorAccounts/ApproveInvestments.vue"),
+          meta: { title: "Approve Loan Investments" },
+        },
+        {
+          path: "investor-accounts/products",
+          name: "investor-products",
+          component: () => import("@/pages/InvestorAccounts/Products.vue"),
+          meta: { title: "Investor Account Products" },
         },
         // E-Signatures
         {
@@ -263,12 +407,36 @@ const router = createRouter({
           component: () => import("@/pages/Payroll/List.vue"),
           meta: { title: "Payroll" },
         },
+        {
+          path: "payroll/staff/:staffId",
+          name: "staff-payroll",
+          component: () => import("@/pages/Payroll/StaffPayroll.vue"),
+          meta: { title: "Staff Payroll" },
+        },
+        {
+          path: "payroll/create",
+          name: "payroll-create",
+          component: () => import("@/pages/Payroll/Create.vue"),
+          meta: { title: "Add Payroll" },
+        },
+        {
+          path: "payroll/report",
+          name: "payroll-report",
+          component: () => import("@/pages/Payroll/Report.vue"),
+          meta: { title: "Payroll Report" },
+        },
         // Expenses
         {
           path: "expenses",
           name: "expenses",
           component: () => import("@/pages/Expenses/List.vue"),
           meta: { title: "Expenses" },
+        },
+        {
+          path: "expenses/create",
+          name: "expenses-create",
+          component: () => import("@/pages/Expenses/Create.vue"),
+          meta: { title: "Add Expense" },
         },
         // Other Income
         {
@@ -277,13 +445,38 @@ const router = createRouter({
           component: () => import("@/pages/OtherIncome/List.vue"),
           meta: { title: "Other Income" },
         },
-        // Asset Management
         {
-          path: "asset-management",
-          name: "asset-management",
-          component: () => import("@/pages/AssetManagement/List.vue"),
-          meta: { title: "Asset Management" },
+          path: "other-income/create",
+          name: "other-income-create",
+          component: () => import("@/pages/OtherIncome/Create.vue"),
+          meta: { title: "Add Other Income" },
         },
+        {
+          path: "other-income/upload",
+          name: "other-income-upload",
+          component: () => import("@/pages/OtherIncome/UploadCSV.vue"),
+          meta: { title: "Upload Other Income - CSV" },
+        },
+        // Asset Management
+          {
+            path: "asset-management",
+            name: "asset-management",
+            component: () => import("@/pages/AssetManagement/List.vue"),
+            meta: { title: "Asset Management" },
+        },
+        {
+          path: "asset-management/create",
+          name: "asset-management-create",
+          component: () => import("@/pages/AssetManagement/Create.vue"),
+          meta: { title: "Add Asset" },
+        },
+        {
+          path: "asset-management/depreciation",
+          name: "asset-management-depreciation",
+          component: () => import("@/pages/AssetManagement/Depreciation.vue"),
+          meta: { title: "Asset Depreciation" },
+        },
+
         // Reports
         {
           path: "reports",
