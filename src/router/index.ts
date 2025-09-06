@@ -458,11 +458,11 @@ const router = createRouter({
           meta: { title: "Upload Other Income - CSV" },
         },
         // Asset Management
-          {
-            path: "asset-management",
-            name: "asset-management",
-            component: () => import("@/pages/AssetManagement/List.vue"),
-            meta: { title: "Asset Management" },
+        {
+          path: "asset-management",
+          name: "asset-management",
+          component: () => import("@/pages/AssetManagement/List.vue"),
+          meta: { title: "Asset Management" },
         },
         {
           path: "asset-management/create",
@@ -470,7 +470,6 @@ const router = createRouter({
           component: () => import("@/pages/AssetManagement/Create.vue"),
           meta: { title: "Add Asset" },
         },
-      
 
         // Reports
         {
@@ -508,18 +507,6 @@ const router = createRouter({
           name: "reports-collector",
           component: () => import("@/pages/Reports/Collector.vue"),
           meta: { title: "Collector Report (Staff)" },
-        },
-        {
-          path: "reports/deferred-income",
-          name: "reports-deferred-income",
-          component: () => import("@/pages/Reports/DeferredIncome.vue"),
-          meta: { title: "Deferred Income" },
-        },
-        {
-          path: "reports/deferred-income-monthly",
-          name: "reports-deferred-income-monthly",
-          component: () => import("@/pages/Reports/DeferredIncomeMonthly.vue"),
-          meta: { title: "Deferred Income Monthly" },
         },
         {
           path: "reports/pro-rata",
@@ -586,12 +573,6 @@ const router = createRouter({
           name: "reports-at-glance",
           component: () => import("@/pages/Reports/AtGlance.vue"),
           meta: { title: "At a Glance Report" },
-        },
-        {
-          path: "reports/all-entries",
-          name: "reports-all-entries",
-          component: () => import("@/pages/Reports/AllEntries.vue"),
-          meta: { title: "All Entries" },
         },
         // Accounting
         {
