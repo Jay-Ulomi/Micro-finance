@@ -145,9 +145,9 @@
     </aside>
 
     <!-- Main content -->
-    <div :class="sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'">
+    <div :class="sidebarCollapsed ? 'lg:pl-20' : 'lg:pl-64'" class="min-h-screen flex flex-col">
       <!-- Header -->
-      <header class="sticky top-0 z-30 bg-white shadow-sm border-b border-gray-200">
+      <header class="sticky top-0 z-30 bg-white shadow-sm border-b border-gray-200 flex-shrink-0">
         <div class="flex items-center justify-between h-14 px-6">
           <div class="flex items-center">
             <button @click="sidebarOpen = true" class="lg:hidden mr-4">
@@ -231,8 +231,10 @@
       </header>
 
       <!-- Page content -->
-      <main class="p-4">
-        <router-view />
+      <main class="flex-1 p-4 overflow-auto">
+        <div class="max-w-7xl mx-auto">
+          <router-view />
+        </div>
       </main>
     </div>
 
@@ -312,6 +314,25 @@ const navigationItems = [
     to: "/",
     icon: HomeIcon,
     hasDropdown: false,
+  },
+  {
+    name: "crm",
+    label: "CRM",
+    to: "/crm",
+    icon: UserGroupIcon,
+    hasDropdown: true,
+    dropdownItems: [
+      { name: "crm-dashboard", label: "CRM Dashboard", to: "/crm" },
+      { name: "crm-contacts", label: "Contacts", to: "/crm/contacts" },
+      { name: "crm-leads", label: "Leads", to: "/crm/leads" },
+      { name: "crm-opportunities", label: "Opportunities", to: "/crm/opportunities" },
+      { name: "crm-activities", label: "Activities", to: "/crm/activities" },
+      { name: "crm-tasks", label: "Tasks", to: "/crm/tasks" },
+      { name: "crm-calendar", label: "Calendar", to: "/crm/calendar" },
+      { name: "crm-communications", label: "Communications", to: "/crm/communications" },
+      { name: "crm-reports", label: "CRM Reports", to: "/crm/reports" },
+      { name: "crm-settings", label: "CRM Settings", to: "/crm/settings" },
+    ],
   },
   {
     name: "borrowers",
@@ -630,9 +651,15 @@ const navigationItems = [
     icon: CalculatorIcon,
     hasDropdown: true,
     dropdownItems: [
+      { name: "accounting-cash-flow", label: "Cash Flow Statement", to: "/accounting/cash-flow" },
+      { name: "accounting-cash-flow-monthly", label: "Cash Flow Monthly", to: "/accounting/cash-flow-monthly" },
+      { name: "accounting-branch-equity", label: "Branch Equity", to: "/accounting/branch-equity" },
+      { name: "accounting-inter-bank-transfers", label: "Inter Bank Transfers", to: "/accounting/inter-bank-transfers" },
       { name: "accounting-general-ledger", label: "General Ledger", to: "/accounting/ledger" },
       { name: "accounting-journal", label: "Journal Entries", to: "/accounting/journal" },
-      { name: "accounting-chart-accounts", label: "Chart of Accounts", to: "/accounting/chart" },
+      { name: "accounting-view-manual-journal", label: "View Manual Journal", to: "/accounting/manual-journal" },
+      { name: "accounting-add-manual-journal", label: "Add Manual Journal", to: "/accounting/manual-journal/create" },
+      { name: "accounting-chart-of-accounts", label: "Chart of Accounts", to: "/accounting/chart-of-accounts" },
       { name: "accounting-trial-balance", label: "Trial Balance", to: "/accounting/trial-balance" },
       {
         name: "accounting-financial-statements",
